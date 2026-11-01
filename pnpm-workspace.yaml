@@ -1,0 +1,45 @@
+packages:
+  - apps/*
+  - apps/*/*
+  - packages/*
+  - packages/*/*
+
+catalogMode: prefer
+
+catalog:
+  "@antfu/eslint-config": ^10.0.0
+  "@changesets/cli": ^3.0.3
+  "@commitlint/cli": ^21.2.3
+  "@commitlint/config-conventional": ^21.2.3
+  "@types/node": ^26.6.5
+  "@vitejs/plugin-vue": ^6.0.10
+  '@vue-flow/core': ^1.48.2
+  eslint: ^10.13.0
+  typescript: ^6.0.3
+  unplugin-vue: ^8.0.1
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+  vitepress: 2.0.0-alpha.20
+  vue: ^3.5.43
+  vue-tsc: ^3.3.13
+overrides:
+  vite@*: "catalog:"
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+minimumReleaseAgeExclude:
+  - "@voidzero-dev/vite-plus-core@1.4.0"
+  - "@voidzero-dev/vite-plus-darwin-arm64@1.4.0"
+  - "@voidzero-dev/vite-plus-darwin-x64@1.4.0"
+  - "@voidzero-dev/vite-plus-linux-arm64-gnu@1.4.0"
+  - "@voidzero-dev/vite-plus-linux-arm64-musl@1.4.0"
+  - "@voidzero-dev/vite-plus-linux-x64-gnu@1.4.0"
+  - "@voidzero-dev/vite-plus-linux-x64-musl@1.4.0"
+  - "@voidzero-dev/vite-plus-win32-arm64-msvc@1.4.0"
+  - "@voidzero-dev/vite-plus-win32-x64-msvc@1.4.0"
+  - vite-plus@1.4.0
+  - unplugin-vue@8.0.1
+allowBuilds:
+  vue-demi: true
