@@ -1,4 +1,4 @@
-name: Deploy docs
+name: Deploy docs and playground
 
 on:
   workflow_dispatch:
@@ -39,7 +39,14 @@ jobs:
           else
             echo "DOCS_BASE=/$repository_name/" >> "$GITHUB_ENV"
           fi
-      - run: pnpm docs:build
+      - name: Build docs
+        run: pnpm docs:build
+      - name: Build playground
+        run: pnpm build:vue
+        env:
+          PLAYGROUND_BASE: ${{ env.DOCS_BASE }}playground/
+      - name: Include playground in Pages artifact
+        run: cp -R apps/playgroud/vue/dist apps/docs/.vitepress/dist/playground
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

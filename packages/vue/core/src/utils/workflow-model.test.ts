@@ -56,9 +56,8 @@ describe("工作流数据模型", () => {
     expect(edges.value).toContainEqual(
       expect.objectContaining({ source: conditionAdd.id, target: approval.id }),
     );
-    expect(edges.value.filter((edge) => edge.source === exit.id)).toEqual([
-      expect.objectContaining({ target: afterLoop.id }),
-    ]);
+    expect(edges.value.filter((edge) => edge.source === exit.id)).toEqual([]);
+    expect(edges.value).toContainEqual(expect.objectContaining({ target: afterLoop.id }));
     expect(edges.value).toContainEqual(
       expect.objectContaining({ target: loop.id, data: { type: WORKFLOW_EDGE_TYPE.LOOP } }),
     );

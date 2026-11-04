@@ -146,6 +146,34 @@ describe("autoCalEdge", () => {
     ]);
   });
 
+  it("循环条件分支中的退出节点不向下汇合，其他分支仍连接后续节点和循环回线", () => {
+    const result = autoCalEdge([
+      node("loop", WORKFLOW_NODE_TYPE.LOOP),
+      node("branch", WORKFLOW_NODE_TYPE.CONDITION_BRANCH, "loop"),
+      node("left", WORKFLOW_NODE_TYPE.CONDITION, "branch", { conditionIndex: 1 }),
+      node("left-add", WORKFLOW_NODE_TYPE.ADD, "left"),
+      node("right", WORKFLOW_NODE_TYPE.CONDITION, "branch", { isDefaultCondition: true }),
+      node("right-add", WORKFLOW_NODE_TYPE.ADD, "right"),
+      node("exit", WORKFLOW_NODE_TYPE.EXIT_LOOP, "right"),
+      node("after-branch", WORKFLOW_NODE_TYPE.ADD, "loop"),
+      node("after-loop", WORKFLOW_NODE_TYPE.ADD),
+      node("end", WORKFLOW_NODE_TYPE.END),
+    ]);
+
+    expect(connections(result)).toEqual([
+      "loop->branch",
+      "branch->left",
+      "left->left-add",
+      "left-add->after-branch",
+      "branch->right",
+      "right->right-add",
+      "right-add->exit",
+      "after-branch->after-loop",
+      "after-branch->loop(loop)",
+      "after-loop->end",
+    ]);
+  });
+
   it("嵌套循环分别生成回线，内层完成后继续外层剩余节点", () => {
     const result = autoCalEdge([
       node("outer", WORKFLOW_NODE_TYPE.LOOP),
@@ -165,7 +193,7 @@ describe("autoCalEdge", () => {
     ]);
   });
 
-  it("退出循环越过循环体剩余节点，且只退出最近一层循环", () => {
+  it("退出循环不连接循环体剩余节点、循环后续节点或回线", () => {
     const result = autoCalEdge([
       node("outer", WORKFLOW_NODE_TYPE.LOOP),
       node("inner", WORKFLOW_NODE_TYPE.LOOP, "outer"),
@@ -175,13 +203,12 @@ describe("autoCalEdge", () => {
       node("end", WORKFLOW_NODE_TYPE.END),
     ]);
 
-    expect(connections(result).filter((edge) => edge.startsWith("exit->"))).toEqual([
-      "exit->after-inner",
-    ]);
+    expect(connections(result).filter((edge) => edge.startsWith("exit->"))).toEqual([]);
+    expect(connections(result)).toContain("inner->exit");
     expect(connections(result)).toContain("after-inner->outer(loop)");
   });
 
-  it("内层位于外层末尾时，退出内层后仍可回到外层循环", () => {
+  it("内层位于外层末尾时，退出节点也不连接外层循环或结束节点", () => {
     const result = autoCalEdge([
       node("outer", WORKFLOW_NODE_TYPE.LOOP),
       node("inner", WORKFLOW_NODE_TYPE.LOOP, "outer"),
@@ -189,12 +216,7 @@ describe("autoCalEdge", () => {
       node("end", WORKFLOW_NODE_TYPE.END),
     ]);
 
-    expect(connections(result)).toEqual([
-      "outer->inner",
-      "inner->exit",
-      "exit->end",
-      "exit->outer(loop)",
-    ]);
+    expect(connections(result)).toEqual(["outer->inner", "inner->exit"]);
   });
 
   it("循环没有后续节点时，退出节点不生成回线", () => {
@@ -229,14 +251,14 @@ describe("autoCalEdge", () => {
     expect(connections(result)).toEqual(["loop->stop"]);
   });
 
-  it("缺少 data 和循环外的 exit-loop 按普通节点连接", () => {
+  it("缺少 data 的节点按普通节点连接，循环外的 exit-loop 仍不生成出边", () => {
     const result = autoCalEdge([
       { id: "unknown" },
       node("exit", WORKFLOW_NODE_TYPE.EXIT_LOOP),
       node("end", WORKFLOW_NODE_TYPE.END),
     ]);
 
-    expect(connections(result)).toEqual(["unknown->exit", "exit->end"]);
+    expect(connections(result)).toEqual(["unknown->exit"]);
   });
 
   it("不修改只读输入，忽略坐标并保持结果和边 ID 稳定", () => {

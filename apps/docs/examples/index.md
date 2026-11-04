@@ -4,12 +4,15 @@ outline: [2, 3]
 
 <script setup lang="ts">
 import { defineAsyncComponent } from "vue";
+import { withBase } from "vitepress";
 const WorkflowExample = defineAsyncComponent(() => import("./WorkflowExample.vue"));
 </script>
 
 # 交互示例
 
 选择预置流程，在画布中添加节点，点击业务卡片后修改名称、说明和 JSON 配置。节点数据可在下方展开查看。
+
+也可以<a :href="withBase('/playground/')" target="_blank" rel="noopener noreferrer">打开独立 Playground</a>，使用完整画布体验节点编排与业务配置。项目源码见 [GitHub 仓库](https://github.com/bubblesplant/workflow)。
 
 <ClientOnly>
   <WorkflowExample />

@@ -129,7 +129,7 @@ describe("insertNode", () => {
     );
   });
 
-  it("循环内的分支可以添加退出节点，退出后直接连接循环外且不追加入口", () => {
+  it("循环内的分支可以添加退出节点，不生成出边或追加入口", () => {
     const result = insertNode(
       [
         node("loop", WORKFLOW_NODE_TYPE.LOOP),
@@ -148,9 +148,9 @@ describe("insertNode", () => {
       parentNode: "condition",
       data: { type: WORKFLOW_NODE_TYPE.EXIT_LOOP },
     });
-    expect(autoCalEdge(result).filter((edge) => edge.source === exit?.id)).toEqual([
-      expect.objectContaining({ source: exit?.id, target: "end" }),
-    ]);
+    const edges = autoCalEdge(result);
+    expect(edges).toContainEqual(expect.objectContaining({ source: "add", target: exit?.id }));
+    expect(edges.filter((edge) => edge.source === exit?.id)).toEqual([]);
   });
 
   it("拒绝不存在或类型错误的入口，并拒绝在循环外添加退出循环", () => {

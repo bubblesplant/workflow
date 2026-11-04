@@ -15,8 +15,8 @@ interface EdgeTarget {
 /**
  * 数组顺序表示同层执行顺序，parentNode 表示所属节点，不依赖 position。
  * 条件分支并行展开，各分支末尾汇入后续节点；其他子节点按顺序串联。
- * 循环体末尾连接后续节点并生成回线，exit-loop 跳到最近一层循环之后。
- * end 不生成出边，空循环不生成回线；不修改输入节点。
+ * 循环体末尾连接后续节点并生成回线，exit-loop 在卡片处终止连线。
+ * end 和 exit-loop 不生成出边，空循环不生成回线；不修改输入节点。
  */
 export function autoCalEdge<TConfig>(nodes: readonly VueFlowNodeProps<TConfig>[]): VueFlowEdge[] {
   const entries = new Map<string, EdgeNode<TConfig>>();
@@ -92,18 +92,14 @@ export function autoCalEdge<TConfig>(nodes: readonly VueFlowNodeProps<TConfig>[]
   /**
    * 步骤 5：按节点类型递归展开出边。
    * targets 是当前节点或其子树正常执行完成后的去向，可同时包含后续节点和循环回线。
-   * loopExitTargets 是退出最近一层循环后的去向；undefined 表示当前不在循环中。
    */
-  const visitNode = (
-    entry: EdgeNode<TConfig>,
-    targets: readonly EdgeTarget[],
-    loopExitTargets?: readonly EdgeTarget[],
-  ): void => {
+  const visitNode = (entry: EdgeNode<TConfig>, targets: readonly EdgeTarget[]): void => {
     const { node, children } = entry;
-    // 结束节点没有出边；循环中的退出节点直接跳到循环之后，跳过循环体剩余节点和本层回线。
-    if (node.data?.type === WORKFLOW_NODE_TYPE.END) return;
-    if (node.data?.type === WORKFLOW_NODE_TYPE.EXIT_LOOP && loopExitTargets !== undefined) {
-      connect(node.id, loopExitTargets);
+    // 结束和退出循环都在当前卡片处终止连线，不参与后续汇合或生成循环回线。
+    if (
+      node.data?.type === WORKFLOW_NODE_TYPE.END ||
+      node.data?.type === WORKFLOW_NODE_TYPE.EXIT_LOOP
+    ) {
       return;
     }
 
@@ -118,7 +114,7 @@ export function autoCalEdge<TConfig>(nodes: readonly VueFlowNodeProps<TConfig>[]
       // 条件分支分别连向每个条件入口，并将同一组后续目标传给各分支，实现末尾汇合。
       for (const child of children) {
         connect(node.id, [{ id: child.node.id }]);
-        visitNode(child, targets, loopExitTargets);
+        visitNode(child, targets);
       }
       return;
     }
@@ -126,11 +122,10 @@ export function autoCalEdge<TConfig>(nodes: readonly VueFlowNodeProps<TConfig>[]
     // 其余有子节点的节点先进入第一个子节点，子节点之间再按顺序串联。
     connect(node.id, [{ id: firstChild.node.id }]);
     if (node.data?.type === WORKFLOW_NODE_TYPE.LOOP) {
-      // 循环体末尾同时连接正常后续目标和循环入口；退出目标改为本层循环之后的节点。
-      visitSequence(children, [...targets, { id: node.id, loop: true }], targets);
+      // 循环体末尾同时连接正常后续目标和循环入口。
+      visitSequence(children, [...targets, { id: node.id, loop: true }]);
     } else {
-      // 普通容器沿用外层循环的退出目标，使嵌套分支中的 exit-loop 仍能退出所属循环。
-      visitSequence(children, targets, loopExitTargets);
+      visitSequence(children, targets);
     }
   };
 
@@ -138,11 +133,10 @@ export function autoCalEdge<TConfig>(nodes: readonly VueFlowNodeProps<TConfig>[]
   const visitSequence = (
     sequence: readonly EdgeNode<TConfig>[],
     targets: readonly EdgeTarget[],
-    loopExitTargets?: readonly EdgeTarget[],
   ): void => {
     sequence.forEach((entry, index) => {
       const next = sequence[index + 1];
-      visitNode(entry, next ? [{ id: next.node.id }] : targets, loopExitTargets);
+      visitNode(entry, next ? [{ id: next.node.id }] : targets);
     });
   };
 

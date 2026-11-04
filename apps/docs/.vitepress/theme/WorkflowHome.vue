@@ -14,7 +14,13 @@
         <a class="workflow-button primary" :href="withBase('/guide/getting-started')"
           >开始使用 <span aria-hidden="true">↗</span></a
         >
-        <a class="workflow-button" :href="withBase('/examples/')">体验设计器</a>
+        <a
+          class="workflow-button"
+          :href="withBase('/playground/')"
+          target="_blank"
+          rel="noopener noreferrer"
+          >打开 Playground <span aria-hidden="true">↗</span></a
+        >
         <a class="workflow-text-link" :href="withBase('/api/designer')"
           >阅读 API <span aria-hidden="true">↗</span></a
         >

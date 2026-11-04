@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite-plus";
 
 export default defineConfig(({ command }) => ({
+  base: process.env.PLAYGROUND_BASE ?? "/",
   plugins: [vue()],
   resolve: {
     alias:

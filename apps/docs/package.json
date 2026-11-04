@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vp run bundle",
-    "dev": "vitepress dev . --port 5174 --strictPort",
+    "dev": "vitepress dev . --port 5174",
     "preview": "vitepress preview .",
     "typecheck": "vue-tsc -p tsconfig.json --noEmit"
   },

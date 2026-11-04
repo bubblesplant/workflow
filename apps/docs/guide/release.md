@@ -41,7 +41,7 @@ pnpm ready
 
 `.github/workflows/release.yml` 通过 `workflow_dispatch` 手动触发，并在 `main` 分支运行。在仓库设置中允许 GitHub Actions 创建版本 PR；配置具有 `@bubblesjs` scope 发布权限的 `NPM_TOKEN` 后支持 npm 发布。
 
-## 部署文档
+## 部署文档与 Playground
 
 文档产物位于 `apps/docs/.vitepress/dist/`：
 
@@ -57,4 +57,20 @@ $env:DOCS_BASE = '/workflow/'
 pnpm docs:build
 ```
 
-使用 GitHub Pages 时，将构建来源设为 **GitHub Actions**，再手动运行 `.github/workflows/docs.yml`。工作流根据仓库名设置 `DOCS_BASE`；使用自定义域名时，按实际访问路径调整。
+Playground 产物位于 `apps/playgroud/vue/dist/`。独立部署时默认路径为 `/`，通过 `PLAYGROUND_BASE` 指定子路径：
+
+```powershell
+$env:PLAYGROUND_BASE = '/workflow/playground/'
+pnpm build:vue
+pnpm preview
+```
+
+使用 GitHub Pages 时，将构建来源设为 **GitHub Actions**，再手动运行 `.github/workflows/docs.yml`（**Deploy docs and playground**）。工作流根据仓库名设置 `DOCS_BASE`，将 `PLAYGROUND_BASE` 设为文档路径下的 `playground/`，依次构建文档、组件库和 Playground，然后将 Playground 产物合并到文档产物的 `playground/` 目录，一起部署到同一个 Pages 站点。
+
+当前仓库部署后的访问地址：
+
+- [文档站点](https://bubblesplant.github.io/workflow/)
+- [在线 Playground](https://bubblesplant.github.io/workflow/playground/)
+- [GitHub 仓库](https://github.com/bubblesplant/workflow)
+
+文档导航、首页和交互示例页都提供 Playground 入口。用户或组织主页仓库使用根路径 `/`，对应的 Playground 路径为 `/playground/`；使用自定义域名时，按实际访问路径调整两个应用的 base。

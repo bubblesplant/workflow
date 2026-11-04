@@ -45,6 +45,7 @@ export default defineConfig({
       { text: "指南", link: "/guide/introduction", activeMatch: "/guide/" },
       { text: "API", link: "/api/designer", activeMatch: "/api/" },
       { text: "交互示例", link: "/examples/", activeMatch: "/examples/" },
+      { text: "Playground", link: "/playground/", target: "_blank", rel: "noopener noreferrer" },
       {
         text: "开发",
         items: [
@@ -52,6 +53,13 @@ export default defineConfig({
           { text: "工作区约定", link: "/guide/workspace" },
           { text: "版本与发布", link: "/guide/release" },
         ],
+      },
+    ],
+    socialLinks: [
+      {
+        icon: "github",
+        link: "https://github.com/bubblesplant/workflow",
+        ariaLabel: "GitHub 仓库",
       },
     ],
     sidebar: [
