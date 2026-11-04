@@ -6,7 +6,7 @@
 
 ```ts
 import { ref } from "vue";
-import { createDefaultNodes, type WorkflowNode } from "@workflow/vue-core";
+import { createDefaultNodes, type WorkflowNode } from "@bubblesjs/workflow-vue";
 
 interface BusinessConfig {
   approverIds?: string[];
@@ -28,7 +28,7 @@ const nodes = ref<WorkflowNode<BusinessConfig>[]>(createDefaultNodes<BusinessCon
 
 ```ts
 import { computed, ref } from "vue";
-import type { WorkflowNodeClickEvent } from "@workflow/vue-core";
+import type { WorkflowNodeClickEvent } from "@bubblesjs/workflow-vue";
 
 const selectedNodeId = ref("");
 const selectedNode = computed(() => nodes.value.find((node) => node.id === selectedNodeId.value));

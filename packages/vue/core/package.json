@@ -1,5 +1,5 @@
 {
-  "name": "@workflow/vue-core",
+  "name": "@bubblesjs/workflow-vue",
   "version": "0.1.0",
   "files": [
     "dist"

@@ -2,7 +2,7 @@
   "extends": "../../../tsconfig/vue.json",
   "compilerOptions": {
     "paths": {
-      "@workflow/vue-core": ["../../../packages/vue/core/src/index.ts"]
+      "@bubblesjs/workflow-vue": ["../../../packages/vue/core/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts"]

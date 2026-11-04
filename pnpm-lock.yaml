@@ -268,7 +268,7 @@ importers:
 
   apps/docs:
     dependencies:
-      '@workflow/vue-core':
+      '@bubblesjs/workflow-vue':
         specifier: workspace:*
         version: link:../../packages/vue/core
       vue:
@@ -296,7 +296,7 @@ importers:
 
   apps/playgroud/vue:
     dependencies:
-      '@workflow/vue-core':
+      '@bubblesjs/workflow-vue':
         specifier: workspace:*
         version: link:../../../packages/vue/core
       vue:

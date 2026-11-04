@@ -3,8 +3,8 @@
 `StartCard`、`EndCard` 和 `CommonCard` 可作为独立展示组件使用。它们不包含流程编排能力，也不会自动成为 `Designer` 的自定义节点。
 
 ```ts
-import { StartCard, EndCard, CommonCard } from "@workflow/vue-core";
-import "@workflow/vue-core/style.css";
+import { StartCard, EndCard, CommonCard } from "@bubblesjs/workflow-vue";
+import "@bubblesjs/workflow-vue/style.css";
 ```
 
 ## StartCard / EndCard
@@ -71,8 +71,8 @@ import "@workflow/vue-core/style.css";
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { CommonCard } from "@workflow/vue-core";
-import "@workflow/vue-core/style.css";
+import { CommonCard } from "@bubblesjs/workflow-vue";
+import "@bubblesjs/workflow-vue/style.css";
 
 const selected = ref(false);
 function openSettings() {

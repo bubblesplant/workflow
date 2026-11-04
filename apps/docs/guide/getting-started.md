@@ -1,6 +1,6 @@
 # 快速开始
 
-本页介绍如何在 Vue 应用中使用 `@workflow/vue-core`。运行本仓库请查看[本地开发](../development/)。
+本页介绍如何在 Vue 应用中使用 `@bubblesjs/workflow-vue`。运行本仓库请查看[本地开发](../development/)。
 
 ## 安装
 
@@ -13,15 +13,15 @@
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @workflow/vue-core
+pnpm add @bubblesjs/workflow-vue
 ```
 
 ```bash [npm]
-npm install @workflow/vue-core
+npm install @bubblesjs/workflow-vue
 ```
 
 ```bash [yarn]
-yarn add @workflow/vue-core
+yarn add @bubblesjs/workflow-vue
 ```
 
 :::
@@ -31,7 +31,7 @@ yarn add @workflow/vue-core
 ```json
 {
   "dependencies": {
-    "@workflow/vue-core": "workspace:*"
+    "@bubblesjs/workflow-vue": "workspace:*"
   }
 }
 ```
@@ -54,8 +54,8 @@ import {
   createDefaultNodes,
   type WorkflowNode,
   type WorkflowNodeClickEvent,
-} from "@workflow/vue-core";
-import "@workflow/vue-core/style.css";
+} from "@bubblesjs/workflow-vue";
+import "@bubblesjs/workflow-vue/style.css";
 
 interface BusinessConfig {
   approverIds?: string[];

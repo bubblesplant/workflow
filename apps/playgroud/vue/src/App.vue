@@ -29,7 +29,7 @@ import {
   Designer,
   type WorkflowNode,
   type WorkflowNodeClickEvent,
-} from "@workflow/vue-core";
+} from "@bubblesjs/workflow-vue";
 
 type BusinessConfig = Record<string, unknown>;
 const nodes = ref<WorkflowNode<BusinessConfig>[]>(createDefaultNodes());

@@ -2,7 +2,7 @@
 
 ## 画布没有显示
 
-先检查是否导入 `@workflow/vue-core/style.css`，以及设计器的父容器是否有明确高度。`Designer` 使用 `height: 100%`，如果父容器高度为零，画布也会不可见。
+先检查是否导入 `@bubblesjs/workflow-vue/style.css`，以及设计器的父容器是否有明确高度。`Designer` 使用 `height: 100%`，如果父容器高度为零，画布也会不可见。
 
 ```css
 .workflow-container {

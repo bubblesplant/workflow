@@ -18,7 +18,10 @@ for (const entry of [
   assert(file.isFile() && file.size > 0, `${entry} 应存在且非空`);
 }
 
-for (const module of [await import("@workflow/vue-core"), require("@workflow/vue-core")]) {
+for (const module of [
+  await import("@bubblesjs/workflow-vue"),
+  require("@bubblesjs/workflow-vue"),
+]) {
   assert(module.Designer, "ESM / CJS 入口应导出 Designer");
   assert(module.CommonCard, "ESM / CJS 入口应导出 CommonCard");
   assert.equal(typeof module.createDefaultNodes, "function", "应导出节点初始化方法");

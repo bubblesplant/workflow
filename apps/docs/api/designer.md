@@ -3,8 +3,8 @@
 `Designer` 是工作流画布组件，通过模型同步节点数据，通过事件通知业务侧打开配置表单。
 
 ```ts
-import { Designer } from "@workflow/vue-core";
-import "@workflow/vue-core/style.css";
+import { Designer } from "@bubblesjs/workflow-vue";
+import "@bubblesjs/workflow-vue/style.css";
 ```
 
 ## 基本使用

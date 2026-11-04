@@ -55,8 +55,8 @@ import {
   type WorkflowNode,
   type WorkflowNodeClickEvent,
   type WorkflowNodeType,
-} from "@workflow/vue-core";
-import "@workflow/vue-core/style.css";
+} from "@bubblesjs/workflow-vue";
+import "@bubblesjs/workflow-vue/style.css";
 
 type BusinessConfig = Record<string, unknown>;
 type Preset = "approval" | "branch" | "loop";

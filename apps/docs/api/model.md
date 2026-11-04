@@ -1,6 +1,6 @@
 # 类型与工具
 
-以下类型、常量和工具均从 `@workflow/vue-core` 导出。
+以下类型、常量和工具均从 `@bubblesjs/workflow-vue` 导出。
 
 ## WorkflowNode
 
@@ -79,7 +79,7 @@ const second = createDefaultNodes();
 ## WORKFLOW_NODE_TYPE / WORKFLOW_NODE_SLOT
 
 ```ts
-import { WORKFLOW_NODE_TYPE, WORKFLOW_NODE_SLOT } from "@workflow/vue-core";
+import { WORKFLOW_NODE_TYPE, WORKFLOW_NODE_SLOT } from "@bubblesjs/workflow-vue";
 
 WORKFLOW_NODE_TYPE.APPROVAL; // "approval"
 WORKFLOW_NODE_SLOT; // "workflow"

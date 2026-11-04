@@ -10,7 +10,7 @@
     "typecheck": "vue-tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@workflow/vue-core": "workspace:*",
+    "@bubblesjs/workflow-vue": "workspace:*",
     "vue": "catalog:"
   },
   "devDependencies": {

@@ -21,7 +21,7 @@ function serializeWorkflow() {
 从自己服务端读取的草稿，也需要在校验后再赋给模型：
 
 ```ts
-import type { WorkflowNode } from "@workflow/vue-core";
+import type { WorkflowNode } from "@bubblesjs/workflow-vue";
 
 interface WorkflowDraft<TConfig> {
   schemaVersion: 1;

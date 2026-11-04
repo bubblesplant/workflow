@@ -21,7 +21,7 @@ apps/
   playgroud/vue/       Vue 组件预览应用，包名 vue-playground
   docs/                VitePress 中文文档
 packages/
-  vue/core/            Vue 组件包，包名 @workflow/vue-core
+  vue/core/            Vue 组件包，包名 @bubblesjs/workflow-vue
 tsconfig/              共享 TypeScript 配置
 .changeset/            公开包的版本管理配置
 ```
@@ -52,7 +52,7 @@ tsconfig/              共享 TypeScript 配置
 
 ## 引用组件
 
-应用在 `package.json` 中声明 `"@workflow/vue-core": "workspace:*"`，按包名引用组件，并在应用入口导入样式：
+应用在 `package.json` 中声明 `"@bubblesjs/workflow-vue": "workspace:*"`，按包名引用组件，并在应用入口导入样式：
 
 ```vue
 <template>
@@ -66,8 +66,8 @@ import {
   createDefaultNodes,
   type WorkflowNode,
   type WorkflowNodeClickEvent,
-} from "@workflow/vue-core";
-import "@workflow/vue-core/style.css";
+} from "@bubblesjs/workflow-vue";
+import "@bubblesjs/workflow-vue/style.css";
 
 interface BusinessConfig {
   approverIds?: string[];
@@ -91,7 +91,7 @@ function handleNodeClick({ id }: WorkflowNodeClickEvent) {
 
 公共组件从 `packages/vue/core/src/index.ts` 导出。外部依赖版本统一放在 `pnpm-workspace.yaml` 的 `catalog` 中，子项目使用 `catalog:`，内部包使用 `workspace:*`。
 
-`@workflow/vue-core` 为公开包，首发版本为 `0.1.0`，使用 Changesets 管理版本与发布；根项目、文档和预览应用保持私有。`pnpm verify:packages` 只验证本地产物，不执行发布。
+`@bubblesjs/workflow-vue` 为公开包，首发版本为 `0.1.0`，使用 Changesets 管理版本与发布；根项目、文档和预览应用保持私有。`pnpm verify:packages` 只验证本地产物，不执行发布。
 
 ## 格式化与保存
 

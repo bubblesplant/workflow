@@ -27,7 +27,7 @@
 建议从 `createDefaultNodes()` 开始，通过画布添加节点。如果需要预置流程，保留添加入口可以让使用方继续插入节点：
 
 ```ts
-import { WORKFLOW_NODE_TYPE as T, type WorkflowNode } from "@workflow/vue-core";
+import { WORKFLOW_NODE_TYPE as T, type WorkflowNode } from "@bubblesjs/workflow-vue";
 
 const nodes: WorkflowNode[] = [
   { id: "start", data: { type: T.START, label: "发起" } },

@@ -1,6 +1,6 @@
 # Changesets
 
-`@workflow/vue-core` 是公开包，首发版本为 `0.1.0`。根项目、`docs` 和 `vue-playground` 保持私有；根目录 `tsconfig/` 是普通配置目录，均不参与 npm 发布。
+`@bubblesjs/workflow-vue` 是公开包，首发版本为 `0.1.0`。根项目、`docs` 和 `vue-playground` 保持私有；根目录 `tsconfig/` 是普通配置目录，均不参与 npm 发布。
 
 修改公开包后运行 `pnpm changeset`，选择包、版本类型并填写变更说明。
 

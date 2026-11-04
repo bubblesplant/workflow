@@ -21,13 +21,13 @@ export default defineConfig({
     resolve: {
       alias: [
         {
-          find: /^@workflow\/vue-core$/,
+          find: /^@bubblesjs\/workflow-vue$/,
           replacement: fileURLToPath(
             new URL("../../../packages/vue/core/src/index.ts", import.meta.url),
           ),
         },
         {
-          find: /^@workflow\/vue-core\/style\.css$/,
+          find: /^@bubblesjs\/workflow-vue\/style\.css$/,
           replacement: fileURLToPath(
             new URL("../../../packages/vue/core/src/style.css", import.meta.url),
           ),
