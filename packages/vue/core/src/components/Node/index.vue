@@ -1,18 +1,52 @@
 <template>
-  <Start v-if="data.type === WORKFLOW_NODE_TYPE.START" />
-  <Add v-if="data.type === WORKFLOW_NODE_TYPE.ADD" />
-  <Common v-if="data.type === WORKFLOW_NODE_TYPE.COMMON" />
+  <Start v-if="data?.type === WORKFLOW_NODE_TYPE.START" />
+  <Add
+    v-else-if="data?.type === WORKFLOW_NODE_TYPE.ADD"
+    :allow-exit-loop="allowExitLoop"
+    @add-node="emit('addNode', $event)"
+  />
+  <End v-else-if="data?.type === WORKFLOW_NODE_TYPE.END" />
+  <Branch
+    v-else-if="data?.type === WORKFLOW_NODE_TYPE.CONDITION_BRANCH"
+    :deletable="deletable"
+    @click="emit('click', $event)"
+    @add-branch="emit('addBranch', $event)"
+    @delete="emit('delete', $event)"
+  />
+  <Common
+    v-else
+    :title="data?.label"
+    :type="data?.type"
+    :description="data?.description"
+    :condition-index="data?.conditionIndex"
+    :is-default-condition="data?.isDefaultCondition"
+    :deletable="deletable"
+    @click="emit('click', $event)"
+    @delete="emit('delete', $event)"
+  />
 </template>
 
 <script setup lang="ts">
-import type { NodeData } from "../../types";
 import Start from "./modules/start.vue";
-import Add from "./modules/add.vue";
+import Add from "./modules/add/index.vue";
+import End from "./modules/end.vue";
+import Branch from "./modules/branch.vue";
 import Common from "./modules/common.vue";
-import { WORKFLOW_NODE_TYPE } from "../../utils/index.ts";
+import { WORKFLOW_NODE_TYPE } from "../../utils";
+import type { AddNodeOption } from "../../utils/add-node";
+import type { NodeData } from "../../types";
 
-const { data } = defineProps<{
+const { data, deletable, allowExitLoop } = defineProps<{
   data: NodeData;
+  deletable: boolean;
+  allowExitLoop: boolean;
+}>();
+
+const emit = defineEmits<{
+  click: [event: MouseEvent | KeyboardEvent];
+  addNode: [option: AddNodeOption];
+  addBranch: [event: MouseEvent];
+  delete: [event: MouseEvent];
 }>();
 </script>
 

@@ -56,14 +56,38 @@ tsconfig/              共享 TypeScript 配置
 
 ```vue
 <template>
-  <WorkflowButton>开始使用</WorkflowButton>
+  <Designer id="workflow" v-model:nodes="nodes" @node-click="handleNodeClick" />
 </template>
 
 <script setup lang="ts">
-import { WorkflowButton } from "@workflow/vue-core";
+import { ref } from "vue";
+import {
+  Designer,
+  createDefaultNodes,
+  type WorkflowNode,
+  type WorkflowNodeClickEvent,
+} from "@workflow/vue-core";
 import "@workflow/vue-core/style.css";
+
+interface BusinessConfig {
+  approverIds?: string[];
+}
+
+const nodes = ref<WorkflowNode<BusinessConfig>[]>(createDefaultNodes<BusinessConfig>());
+const selectedNodeId = ref("");
+
+function handleNodeClick({ id }: WorkflowNodeClickEvent) {
+  selectedNodeId.value = id;
+  // 按 id 从 nodes 中读取节点，打开自己的业务配置表单。
+}
 </script>
 ```
+
+`nodes` 是流程结构和业务配置的源数据；添加、删除节点和增加条件分支都会通过 `v-model:nodes` 回写。数组顺序表示同层执行顺序，`parentNode` 表示所属节点；位置和连线由设计器内部计算，无须获取 Vue Flow 实例。
+
+`node-click` 提供 `{ id, type }`，开始、结束和添加入口不触发该事件。使用方可以在对应节点的 `data.config` 中维护可 JSON 序列化的业务信息。表单提交时更新节点数据即可同步画布，完整示例见 `apps/playgroud/vue/src/App.vue`。
+
+保存草稿时可以序列化 `nodes.value`，恢复时将解析后的节点数组赋给 `nodes.value`。真正提交给工作流引擎执行时，仍需按目标引擎的协议转换并校验流程和业务配置。
 
 公共组件从 `packages/vue/core/src/index.ts` 导出。外部依赖版本统一放在 `pnpm-workspace.yaml` 的 `catalog` 中，子项目使用 `catalog:`，内部包使用 `workspace:*`。
 

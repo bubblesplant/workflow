@@ -29,11 +29,17 @@
   "scripts": {
     "build": "vp pack",
     "dev": "vp pack --watch",
+    "test": "vp test",
     "typecheck": "vue-tsc -p tsconfig.json --noEmit",
     "verify:package": "node scripts/verify-package.mjs"
   },
+  "dependencies": {
+    "@vue-flow/core": "catalog:",
+    "@vueuse/core": "catalog:"
+  },
   "devDependencies": {
     "@types/node": "catalog:",
+    "antdv-next": "catalog:",
     "typescript": "catalog:",
     "unplugin-vue": "catalog:",
     "vite": "catalog:",
@@ -43,8 +49,5 @@
   },
   "peerDependencies": {
     "vue": "^3.5.0"
-  },
-  "dependencies": {
-    "@vue-flow/core": "catalog:"
   }
 }

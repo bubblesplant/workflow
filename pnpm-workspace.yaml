@@ -13,7 +13,9 @@ catalog:
   "@commitlint/config-conventional": ^21.2.3
   "@types/node": ^26.6.5
   "@vitejs/plugin-vue": ^6.0.10
-  '@vue-flow/core': ^1.48.2
+  "@vue-flow/core": ^1.48.2
+  '@vueuse/core': ^15.0.0
+  antdv-next: ^1.7.1
   eslint: ^10.13.0
   typescript: ^6.0.3
   unplugin-vue: ^8.0.1

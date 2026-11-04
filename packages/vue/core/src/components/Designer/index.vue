@@ -1,8 +1,25 @@
 <template>
   <div class="index-container">
-    <VueFlow :nodes="initialNodes" :edges="initialEdges" :id="id">
+    <VueFlow
+      :nodes="renderNodes"
+      :edges="renderEdges"
+      :id="id"
+      fit-view-on-init
+      :delete-key-code="null"
+      :nodes-draggable="false"
+      :nodes-connectable="false"
+      :edges-updatable="false"
+    >
       <template #[`node-${WORKFLOW_NODE_SLOT}`]="nodeProps">
-        <Node :data="nodeProps.data" />
+        <Node
+          :data="nodeProps.data"
+          :deletable="canDeleteNode(nodesData, nodeProps.id)"
+          :allow-exit-loop="isInsideLoop(nodesData, nodeProps.id)"
+          @add-node="handleAddNode(nodeProps.id, $event)"
+          @add-branch="handleAddBranch(nodeProps.id)"
+          @delete="handleDelete(nodeProps.id)"
+          @click="handleNodeClick(nodeProps.id)"
+        />
       </template>
       <template #[`edge-${WORKFLOW_NODE_SLOT}`]="edgeProps">
         <Edge
@@ -17,67 +34,64 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { useVueFlow, VueFlow } from "@vue-flow/core";
-import "@vue-flow/core/dist/style.css";
-import "@vue-flow/core/dist/theme-default.css";
+<script setup lang="ts" generic="TConfig = unknown">
+import { VueFlow } from "@vue-flow/core";
+import "../../style.css";
 import Node from "../Node/index.vue";
 import Edge from "../Edge/index.vue";
-
-import { WORKFLOW_NODE_TYPE, WORKFLOW_NODE_SLOT } from "../../utils";
+import { WORKFLOW_NODE_SLOT, WORKFLOW_NODE_TYPE } from "../../utils/constant";
+import { autoLayoutNodePosition } from "../../utils/auto-layout-node-position";
+import {
+  insertNode,
+  insertConditionBranch,
+  isInsideLoop,
+  type AddNodeOption,
+} from "../../utils/add-node";
+import { canDeleteNode, removeNode } from "../../utils/delete-node";
+import { computed } from "vue";
+import type { VueFlowNodeProps, WorkflowNodeClickEvent } from "../../types.ts";
+import { autoCalEdge } from "../../utils/auto-cal-edge.ts";
 
 const { id } = defineProps<{
   id: string;
 }>();
 
-const flow = useVueFlow(id);
+const nodesData = defineModel<VueFlowNodeProps<TConfig>[]>("nodes", {
+  required: true,
+});
 
-const { addNode, addEdge, removeNode, removeEdge, nodes, edges } = flow;
+const emit = defineEmits<{
+  nodeClick: [payload: WorkflowNodeClickEvent];
+}>();
 
-const initialNodes = [
-  {
-    id: "1",
-    type: WORKFLOW_NODE_SLOT,
-    data: { label: "Node 1", type: WORKFLOW_NODE_TYPE.START },
-    position: { x: 250, y: 0 },
-  },
-  {
-    id: "2",
-    type: WORKFLOW_NODE_SLOT,
-    data: { label: "Node 2", type: WORKFLOW_NODE_TYPE.ADD },
-    position: { x: 250, y: 200 },
-  },
-  {
-    id: "3",
-    type: WORKFLOW_NODE_SLOT,
-    data: { label: "Node 3", type: WORKFLOW_NODE_TYPE.COMMON },
-    position: { x: 250, y: 400 },
-  },
-];
+const renderNodes = computed(() => autoLayoutNodePosition(nodesData.value));
+const renderEdges = computed(() => autoCalEdge(nodesData.value));
 
-const initialEdges = [
-  {
-    id: "e1-2",
-    source: "1",
-    target: "2",
-    type: WORKFLOW_NODE_SLOT,
-  },
-  {
-    id: "e2-3",
-    source: "2",
-    target: "3",
-    type: WORKFLOW_NODE_SLOT,
-  },
-  {
-    id: "e2-1",
-    source: "2",
-    target: "1",
-    type: WORKFLOW_NODE_SLOT,
-    data: {
-      type: "loop",
-    },
-  },
-];
+function handleAddNode(nodeId: string, option: AddNodeOption) {
+  nodesData.value = insertNode(nodesData.value, nodeId, option);
+}
+
+function handleAddBranch(nodeId: string) {
+  nodesData.value = insertConditionBranch(nodesData.value, nodeId);
+}
+
+function handleDelete(nodeId: string) {
+  if (!canDeleteNode(nodesData.value, nodeId)) return;
+  nodesData.value = removeNode(nodesData.value, nodeId);
+}
+
+function handleNodeClick(nodeId: string) {
+  const node = nodesData.value.find((entry) => entry.id === nodeId);
+  if (!node?.data) return;
+  const type = node.data.type;
+  if (
+    type === WORKFLOW_NODE_TYPE.ADD ||
+    type === WORKFLOW_NODE_TYPE.START ||
+    type === WORKFLOW_NODE_TYPE.END
+  )
+    return;
+  emit("nodeClick", { id: node.id, type });
+}
 </script>
 
 <style scoped>

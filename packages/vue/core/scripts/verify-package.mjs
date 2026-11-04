@@ -19,14 +19,24 @@ for (const entry of [
 }
 
 for (const module of [await import("@workflow/vue-core"), require("@workflow/vue-core")]) {
-  assert(module.WorkflowButton, "ESM / CJS 入口应导出 WorkflowButton");
+  assert(module.Designer, "ESM / CJS 入口应导出 Designer");
+  assert(module.CommonCard, "ESM / CJS 入口应导出 CommonCard");
+  assert.equal(typeof module.createDefaultNodes, "function", "应导出节点初始化方法");
+  const nodes = module.createDefaultNodes();
+  assert.equal(nodes.length, 3, "初始工作流应包含开始、添加和结束节点");
+  assert.notEqual(nodes[0].data, module.createDefaultNodes()[0].data, "初始数据应相互独立");
   const html = await renderToString(
     createSSRApp({
-      render: () => h(module.WorkflowButton, { disabled: true }, { default: () => "组件产物检查" }),
+      render: () =>
+        h(module.CommonCard, {
+          title: "组件产物检查",
+          description: "业务配置说明",
+          deletable: false,
+        }),
     }),
   );
   assert.match(html, /<button/);
-  assert.match(html, /disabled/);
+  assert.match(html, /业务配置说明/);
   assert.match(html, /组件产物检查/);
 }
 

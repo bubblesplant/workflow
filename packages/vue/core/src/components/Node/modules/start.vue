@@ -1,12 +1,7 @@
 <template>
-  <div class="start-container">start</div>
+  <StartCard />
 </template>
 
-<script setup lang="ts"></script>
-
-<style scoped>
-.start-container {
-  cursor: pointer;
-  background-color: lightblue;
-}
-</style>
+<script setup lang="ts">
+import { StartCard } from "../../Card";
+</script>

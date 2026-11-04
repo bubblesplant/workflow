@@ -4,3 +4,13 @@ declare module "*.vue" {
   const component: DefineComponent;
   export default component;
 }
+
+declare module "*.svg" {
+  const src: string;
+  export default src;
+}
+
+declare module "*.svg?inline" {
+  const src: string;
+  export default src;
+}
