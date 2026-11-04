@@ -1,7 +1,16 @@
 {
   "extends": "../../tsconfig/vue.json",
   "compilerOptions": {
-    "types": ["node", "vite/client"]
+    "types": ["node", "vite/client"],
+    "paths": {
+      "@workflow/vue-core": ["../../packages/vue/core/src/index.ts"]
+    }
   },
-  "include": ["vite.config.ts", ".vitepress/**/*.ts", ".vitepress/**/*.mts", ".vitepress/**/*.vue"]
+  "include": [
+    "vite.config.ts",
+    ".vitepress/**/*.ts",
+    ".vitepress/**/*.mts",
+    ".vitepress/**/*.vue",
+    "examples/**/*.vue"
+  ]
 }

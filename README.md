@@ -103,4 +103,6 @@ VS Code 可以打开仓库根目录，也可以单独打开 `packages/vue/core` 
 
 保存时统一使用 Oxfmt 格式化，同时执行 Oxlint 与 ESLint 各自的代码检查修复；ESLint 的格式化功能关闭。单独打开子项目时使用子目录的 `.vscode` 配置，VS Code 不会继承父目录的工作区设置。
 
-更多说明见[快速开始](apps/docs/guide/getting-started.md)、[工作区约定](apps/docs/guide/workspace.md)和[版本与发布](apps/docs/guide/release.md)。
+文档站使用 VitePress `2.0.0-alpha.21`，运行 `pnpm docs:dev` 后打开 <http://localhost:5174>。包含组件接入、节点结构、业务配置、保存恢复、API 参考与可运行的交互示例；支持本地搜索、深浅色主题和 `DOCS_BASE` 子路径部署。
+
+更多说明见[快速开始](apps/docs/guide/getting-started.md)、[交互示例](apps/docs/examples/index.md)、[本地开发](apps/docs/development/index.md)、[工作区约定](apps/docs/guide/workspace.md)和[版本与发布](apps/docs/guide/release.md)。

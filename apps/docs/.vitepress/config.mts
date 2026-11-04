@@ -1,35 +1,95 @@
 import { defineConfig } from "vitepress";
+import { fileURLToPath, URL } from "node:url";
 
 const basePath = (process.env.DOCS_BASE ?? "/").trim().replace(/^\/+|\/+$/g, "");
 
 export default defineConfig({
   title: "Workflow",
-  description: "基于 pnpm、Vue 3 与 Vite+ 的组件开发工作区",
+  description:
+    "面向 Vue 3 的工作流设计器，支持审批、条件分支与循环，将流程结构与业务配置连接起来。",
   lang: "zh-CN",
   base: basePath ? `/${basePath}/` : "/",
   cleanUrls: true,
   lastUpdated: true,
+  head: [
+    [
+      "link",
+      { rel: "icon", type: "image/svg+xml", href: `${basePath ? `/${basePath}` : ""}/logo.svg` },
+    ],
+  ],
+  vite: {
+    resolve: {
+      alias: [
+        {
+          find: /^@workflow\/vue-core$/,
+          replacement: fileURLToPath(
+            new URL("../../../packages/vue/core/src/index.ts", import.meta.url),
+          ),
+        },
+        {
+          find: /^@workflow\/vue-core\/style\.css$/,
+          replacement: fileURLToPath(
+            new URL("../../../packages/vue/core/src/style.css", import.meta.url),
+          ),
+        },
+      ],
+      dedupe: ["vue"],
+    },
+  },
   markdown: {
     theme: { light: "github-light", dark: "github-dark" },
   },
   themeConfig: {
+    logo: { src: "/logo.svg", alt: "" },
     nav: [
-      { text: "快速开始", link: "/guide/getting-started" },
-      { text: "工作区约定", link: "/guide/workspace" },
-      { text: "版本与发布", link: "/guide/release" },
+      { text: "指南", link: "/guide/introduction", activeMatch: "/guide/" },
+      { text: "API", link: "/api/designer", activeMatch: "/api/" },
+      { text: "交互示例", link: "/examples/", activeMatch: "/examples/" },
+      {
+        text: "开发",
+        items: [
+          { text: "本地开发", link: "/development/" },
+          { text: "工作区约定", link: "/guide/workspace" },
+          { text: "版本与发布", link: "/guide/release" },
+        ],
+      },
     ],
-    sidebar: {
-      "/guide/": [
-        {
-          text: "项目指南",
-          items: [
-            { text: "快速开始", link: "/guide/getting-started" },
-            { text: "工作区约定", link: "/guide/workspace" },
-            { text: "版本与发布", link: "/guide/release" },
-          ],
-        },
-      ],
-    },
+    sidebar: [
+      {
+        text: "开始使用",
+        items: [
+          { text: "介绍", link: "/guide/introduction" },
+          { text: "快速开始", link: "/guide/getting-started" },
+          { text: "交互示例", link: "/examples/" },
+        ],
+      },
+      {
+        text: "使用指南",
+        items: [
+          { text: "节点与流程结构", link: "/guide/nodes" },
+          { text: "节点业务配置", link: "/guide/configuration" },
+          { text: "保存与恢复", link: "/guide/persistence" },
+          { text: "常见问题", link: "/guide/faq" },
+        ],
+      },
+      {
+        text: "API 参考",
+        items: [
+          { text: "Designer", link: "/api/designer" },
+          { text: "类型与工具", link: "/api/model" },
+          { text: "节点卡片", link: "/api/cards" },
+        ],
+      },
+      {
+        text: "参与开发",
+        collapsed: true,
+        items: [
+          { text: "本地开发", link: "/development/" },
+          { text: "工作区约定", link: "/guide/workspace" },
+          { text: "版本与发布", link: "/guide/release" },
+        ],
+      },
+    ],
     search: {
       provider: "local",
       options: {
@@ -63,7 +123,8 @@ export default defineConfig({
     darkModeSwitchTitle: "切换到深色模式",
     skipToContentLabel: "跳转到内容",
     footer: {
-      message: "开发 Vue 组件，在 playground 中验证交互。",
+      message: "用 Vue 构建流程，让业务自由生长。",
+      copyright: "基于 MIT 许可发布 · Workflow",
     },
   },
 });
