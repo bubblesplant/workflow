@@ -1,5 +1,5 @@
 import type { VueFlowNode, VueFlowNodeProps } from "../types";
-import { WORKFLOW_NODE_TYPE } from "./constant";
+import { WORKFLOW_NODE_SLOT, WORKFLOW_NODE_TYPE } from "./constant";
 import {
   getNodeDimensions,
   WORKFLOW_NODE_DIMENSIONS,
@@ -20,6 +20,12 @@ interface LayoutNode<TConfig> {
   height: number;
 }
 
+/** 循环回线通道的绝对坐标，包含嵌套循环的占用空间。 */
+export interface LoopEdgeRoute {
+  right: number;
+  bottom: number;
+}
+
 /**
  * 按 data.type 布局，数组顺序表示同层执行顺序，parentNode 表示所属节点。
  * condition-branch 的直接子节点并行排列，其余子节点串行排列。
@@ -28,9 +34,15 @@ interface LayoutNode<TConfig> {
  */
 export const autoLayoutNodePosition = <TConfig>(
   nodes: readonly VueFlowNodeProps<TConfig>[],
-): VueFlowNode<TConfig>[] => {
+): VueFlowNode<TConfig>[] => layoutWorkflow(nodes).nodes;
+
+/** 同时计算节点位置和回线通道，确保连线使用与节点相同的子树边界。 */
+export const layoutWorkflow = <TConfig>(
+  nodes: readonly VueFlowNodeProps<TConfig>[],
+): { nodes: VueFlowNode<TConfig>[]; loopRoutes: Map<string, LoopEdgeRoute> } => {
   const entries = new Map<string, LayoutNode<TConfig>>();
   const roots: LayoutNode<TConfig>[] = [];
+  const loopRoutes = new Map<string, LoopEdgeRoute>();
 
   // 步骤 1：按 ID 建立索引并检查重复；复制节点和坐标，避免布局时修改输入对象。
   for (const node of nodes) {
@@ -39,7 +51,11 @@ export const autoLayoutNodePosition = <TConfig>(
     }
     const dimensions = getNodeDimensions(node.data?.type ?? WORKFLOW_NODE_TYPE.COMMON);
     entries.set(node.id, {
-      node: { ...node, position: { ...(node.position ?? { x: 0, y: 0 }) } },
+      node: {
+        ...node,
+        type: node.type ?? WORKFLOW_NODE_SLOT,
+        position: { ...(node.position ?? { x: 0, y: 0 }) },
+      },
       dimensions,
       children: [],
       childrenWidth: 0,
@@ -113,8 +129,10 @@ export const autoLayoutNodePosition = <TConfig>(
       entry.width = Math.max(entry.width, entry.childrenWidth);
       entry.height += NODE_GAP + childrenHeight;
       if (entry.node.data?.type === WORKFLOW_NODE_TYPE.LOOP) {
-        // 非空循环在整个循环体下方额外留白，供回线绕行。
-        entry.height += WORKFLOW_NODE_DIMENSIONS.loop.edgeOffsetY;
+        const { edgeGap, edgeOffsetX, edgeOffsetY } = WORKFLOW_NODE_DIMENSIONS.loop;
+        // 对称留白保持节点居中；将回线计入子树宽度，避免侵入相邻分支及外层回线。
+        entry.width = Math.max(entry.width + edgeGap * 2, edgeOffsetX * 2);
+        entry.height += edgeOffsetY;
       }
     }
 
@@ -127,7 +145,7 @@ export const autoLayoutNodePosition = <TConfig>(
 
   // 步骤 4：以首个根节点原有的中心线和顶部为锚点，其他根节点沿同一中心线向下排列。
   const firstRoot = roots[0];
-  if (!firstRoot) return [];
+  if (!firstRoot) return { nodes: [], loopRoutes };
   const centerX = firstRoot.node.position.x + firstRoot.dimensions.width / 2;
   let nextY = firstRoot.node.position.y;
 
@@ -147,6 +165,12 @@ export const autoLayoutNodePosition = <TConfig>(
       x: absolutePosition.x - parentPosition.x,
       y: absolutePosition.y - parentPosition.y,
     };
+    if (entry.node.data?.type === WORKFLOW_NODE_TYPE.LOOP && entry.children.length > 0) {
+      loopRoutes.set(entry.node.id, {
+        right: left + entry.width,
+        bottom: top + entry.height,
+      });
+    }
 
     const isBranch = entry.node.data?.type === WORKFLOW_NODE_TYPE.CONDITION_BRANCH;
     // 子节点区域整体居中，顶部从父节点外框下方一个间距处开始。
@@ -175,5 +199,5 @@ export const autoLayoutNodePosition = <TConfig>(
     nextY += root.height + NODE_GAP;
   }
 
-  return Array.from(entries.values(), (entry) => entry.node);
+  return { nodes: Array.from(entries.values(), (entry) => entry.node), loopRoutes };
 };

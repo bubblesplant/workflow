@@ -23,7 +23,7 @@ apps/
 packages/
   vue/core/            Vue 组件包，包名 @workflow/vue-core
 tsconfig/              共享 TypeScript 配置
-.changeset/            预留的版本管理配置
+.changeset/            公开包的版本管理配置
 ```
 
 `playgroud` 沿用当前项目的目录命名。工作区同时匹配 `apps/*`、`apps/*/*`、`packages/*` 和 `packages/*/*`，支持按框架组织子项目。
@@ -43,7 +43,7 @@ tsconfig/              共享 TypeScript 配置
 | `pnpm lint:ox` / `pnpm lint:vue`                          | 分别执行 Oxlint / Vue 专项 ESLint 检查 |
 | `pnpm format` / `pnpm format:check`                       | 格式化 / 检查格式                      |
 | `pnpm check`                                              | 执行工作区质量检查                     |
-| `pnpm verify:packages`                                    | 验证本地组件包产物                     |
+| `pnpm verify:packages`                                    | 验证产物及独立安装后的严格类型检查     |
 | `pnpm ready` / `pnpm run ci`                              | 质量检查、全量构建和产物验证           |
 | `pnpm docs:dev` / `pnpm docs:build` / `pnpm docs:preview` | 文档开发 / 构建 / 预览                 |
 | `pnpm hooks:install`                                      | 安装提交检查 hooks                     |
@@ -91,7 +91,7 @@ function handleNodeClick({ id }: WorkflowNodeClickEvent) {
 
 公共组件从 `packages/vue/core/src/index.ts` 导出。外部依赖版本统一放在 `pnpm-workspace.yaml` 的 `catalog` 中，子项目使用 `catalog:`，内部包使用 `workspace:*`。
 
-当前项目及子包均为私有，Changesets 与发布工作流保留给将来需要发布的包。`pnpm verify:packages` 只验证本地产物，不执行发布。
+`@workflow/vue-core` 为公开包，首发版本为 `0.1.0`，使用 Changesets 管理版本与发布；根项目、文档和预览应用保持私有。`pnpm verify:packages` 只验证本地产物，不执行发布。
 
 ## 格式化与保存
 

@@ -43,13 +43,14 @@ describe("autoLayoutNodePosition", () => {
     expect(autoLayoutNodePosition([])).toEqual([]);
   });
 
-  it("全部省略 position 时从原点布局，并补齐根节点和子节点坐标", () => {
+  it("省略 type 和 position 时补齐根节点及子节点的渲染类型和坐标", () => {
     const input: readonly VueFlowNodeProps[] = [
       { id: "start", data: { type: WORKFLOW_NODE_TYPE.START, label: "发起" } },
-      { id: "loop", data: { type: WORKFLOW_NODE_TYPE.LOOP, label: "循环" } },
+      { id: "loop", type: undefined, data: { type: WORKFLOW_NODE_TYPE.LOOP, label: "循环" } },
       { id: "add", parentNode: "loop", data: { type: WORKFLOW_NODE_TYPE.ADD, label: "添加" } },
       { id: "end", data: { type: WORKFLOW_NODE_TYPE.END, label: "结束" } },
     ];
+    const original = structuredClone(input);
 
     const result = autoLayoutNodePosition(input);
 
@@ -59,7 +60,14 @@ describe("autoLayoutNodePosition", () => {
       { x: 160, y: 164 },
       { x: 0, y: 374 },
     ]);
-    for (const entry of input) expect(entry).not.toHaveProperty("position");
+    expect(result.every((entry) => entry.type === WORKFLOW_NODE_SLOT)).toBe(true);
+    expect(input).toEqual(original);
+  });
+
+  it("保留显式传入的自定义渲染类型", () => {
+    const input = { ...node("custom", WORKFLOW_NODE_TYPE.APPROVAL), type: "custom-renderer" };
+
+    expect(autoLayoutNodePosition([input])[0]?.type).toBe("custom-renderer");
   });
 
   it("允许混合传入有无 position 的节点，保留首个根节点的锚点", () => {

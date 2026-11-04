@@ -1,7 +1,6 @@
 {
   "name": "@workflow/vue-core",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "files": [
     "dist"
   ],
@@ -26,14 +25,22 @@
     "./style.css": "./dist/style.css",
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "vp pack",
     "dev": "vp pack --watch",
     "test": "vp test",
     "typecheck": "vue-tsc -p tsconfig.json --noEmit",
-    "verify:package": "node scripts/verify-package.mjs"
+    "verify:package": "node scripts/verify-package.mjs && node scripts/verify-consumer-types.mjs"
   },
   "dependencies": {
+    "@types/d3-drag": "catalog:",
+    "@types/d3-selection": "catalog:",
+    "@types/d3-transition": "catalog:",
+    "@types/d3-zoom": "catalog:",
+    "@types/web-bluetooth": "catalog:",
     "@vue-flow/core": "catalog:",
     "@vueuse/core": "catalog:"
   },
@@ -48,6 +55,6 @@
     "vue-tsc": "catalog:"
   },
   "peerDependencies": {
-    "vue": "^3.5.0"
+    "vue": "^3.5.40"
   }
 }

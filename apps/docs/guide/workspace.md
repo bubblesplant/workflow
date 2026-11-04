@@ -13,7 +13,7 @@ tsconfig/            共享 TypeScript 配置
 
 `pnpm-workspace.yaml` 匹配 `apps/*`、`apps/*/*`、`packages/*` 和 `packages/*/*`。每个子项目维护自己的 `package.json`、入口、构建配置和脚本；根目录维护公共命令、依赖版本、锁文件和质量检查。
 
-当前项目及子包均设置为 `private: true`。`tsconfig/` 是普通配置目录，不作为工作区包。
+`@workflow/vue-core` 是公开包，根项目、文档和预览应用设置为 `private: true`。`tsconfig/` 是普通配置目录，不作为工作区包。
 
 ## 依赖管理
 
@@ -61,7 +61,7 @@ import "@workflow/vue-core/style.css";
 
 应用使用 `vp build`，产物在 `apps/playgroud/vue/dist/`。根 `pnpm build:vue` 先构建组件库，再构建应用；`pnpm build` 还会构建文档站点。
 
-`pnpm verify:packages` 验证本地组件包的产物与导出。完整验证运行 `pnpm ready`。
+`pnpm verify:packages` 验证组件包的产物与导出，并将打包产物独立安装，在最低支持的 Vue 版本下关闭 `skipLibCheck`，检查 ESM、CJS 声明。完整验证运行 `pnpm ready`。
 
 ## 共享配置与扩展
 

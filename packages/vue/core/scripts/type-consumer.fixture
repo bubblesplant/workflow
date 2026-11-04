@@ -1,0 +1,39 @@
+import {
+  CommonCard,
+  Designer,
+  EndCard,
+  StartCard,
+  createDefaultNodes,
+  type VueFlowNode,
+  type WorkflowNode,
+  type WorkflowNodeClickEvent,
+} from "@workflow/vue-core";
+import { h } from "vue";
+
+interface BusinessConfig {
+  approverIds: string[];
+}
+
+const nodes: WorkflowNode<BusinessConfig>[] = createDefaultNodes<BusinessConfig>();
+const runtimeNode: VueFlowNode<BusinessConfig> = {
+  id: "approval",
+  position: { x: 0, y: 0 },
+  data: { type: "approval", label: "审批", config: { approverIds: ["user-1"] } },
+};
+const props: Parameters<typeof Designer<BusinessConfig>>[0] = {
+  id: "consumer",
+  nodes,
+  onNodeClick(event: WorkflowNodeClickEvent) {
+    event.id.toUpperCase();
+  },
+};
+
+h(Designer<BusinessConfig>, props);
+h(CommonCard, { title: "审批", selected: true });
+h(StartCard, { label: "开始" });
+h(EndCard, { label: "结束" });
+nodes.push(runtimeNode);
+
+// @ts-expect-error 业务配置的泛型不能退化为 any。
+const invalidNodes: WorkflowNode<BusinessConfig>[] = createDefaultNodes<{ approverIds: number[] }>();
+void invalidNodes;

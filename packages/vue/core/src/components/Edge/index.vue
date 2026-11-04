@@ -21,13 +21,15 @@ import { BaseEdge } from "@vue-flow/core";
 import { computed, useId } from "vue";
 import { WORKFLOW_EDGE_TYPE, WORKFLOW_NODE_TYPE } from "../../utils/constant";
 import { getNodeDimensions, WORKFLOW_NODE_DIMENSIONS } from "../../utils/node-dimensions";
+import type { LoopEdgeRoute } from "../../utils/auto-layout-node-position";
 
-const { sourceX, sourceY, targetX, targetY, data } = defineProps<{
+const { sourceX, sourceY, targetX, targetY, data, loopRoute } = defineProps<{
   sourceX: number;
   sourceY: number;
   targetX: number;
   targetY: number;
   data: any;
+  loopRoute?: LoopEdgeRoute;
 }>();
 
 const arrowMarkerId = `workflow-arrow-${useId()}`;
@@ -39,8 +41,9 @@ const path = computed(() => {
     // Vue Flow 默认目标坐标位于卡片顶部中点，回线落在卡片右侧中点。
     const endX = targetX + width / 2;
     const endY = targetY + height / 2;
-    const bottom = sourceY + edgeOffsetY;
-    const right = Math.max(sourceX, targetX) + edgeOffsetX;
+    // 同一循环的各分支在完整子树下方汇合，再沿预留的右侧通道返回。
+    const bottom = loopRoute?.bottom ?? sourceY + edgeOffsetY;
+    const right = loopRoute?.right ?? Math.max(sourceX, targetX) + edgeOffsetX;
     return `M ${sourceX} ${sourceY} V ${bottom} H ${right} V ${endY} H ${endX}`;
   }
   if (Math.abs(sourceX - targetX) < 1) return `M ${sourceX} ${sourceY} L ${targetX} ${targetY}`;

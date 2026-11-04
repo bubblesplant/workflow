@@ -20,6 +20,7 @@ export interface VueFlowNode<TConfig = unknown> extends Node<NodeData<TConfig>> 
 /** 可保存的设计器节点；画布运行时的尺寸、选中状态等由 Vue Flow 内部管理。 */
 export interface WorkflowNode<TConfig = unknown> {
   id: string;
+  /** Vue Flow 渲染类型；省略时使用设计器的 workflow 节点。 */
   type?: string;
   parentNode?: string;
   data?: NodeData<TConfig>;

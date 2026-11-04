@@ -11,10 +11,15 @@ catalog:
   "@changesets/cli": ^3.0.3
   "@commitlint/cli": ^21.2.3
   "@commitlint/config-conventional": ^21.2.3
+  "@types/d3-drag": ^3.0.7
+  "@types/d3-selection": ^3.0.12
+  "@types/d3-transition": ^3.0.9
+  "@types/d3-zoom": ^3.0.9
   "@types/node": ^26.6.5
+  "@types/web-bluetooth": ^0.0.21
   "@vitejs/plugin-vue": ^6.0.10
   "@vue-flow/core": ^1.48.2
-  '@vueuse/core': ^15.0.0
+  "@vueuse/core": ^15.0.0
   antdv-next: ^1.7.1
   eslint: ^10.13.0
   typescript: ^6.0.3

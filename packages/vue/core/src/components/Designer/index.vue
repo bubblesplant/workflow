@@ -28,6 +28,7 @@
           :targetX="edgeProps.targetX"
           :targetY="edgeProps.targetY"
           :data="edgeProps.data"
+          :loop-route="layout.loopRoutes.get(edgeProps.target)"
         />
       </template>
     </VueFlow>
@@ -40,7 +41,7 @@ import "../../style.css";
 import Node from "../Node/index.vue";
 import Edge from "../Edge/index.vue";
 import { WORKFLOW_NODE_SLOT, WORKFLOW_NODE_TYPE } from "../../utils/constant";
-import { autoLayoutNodePosition } from "../../utils/auto-layout-node-position";
+import { layoutWorkflow } from "../../utils/auto-layout-node-position";
 import {
   insertNode,
   insertConditionBranch,
@@ -64,7 +65,8 @@ const emit = defineEmits<{
   nodeClick: [payload: WorkflowNodeClickEvent];
 }>();
 
-const renderNodes = computed(() => autoLayoutNodePosition(nodesData.value));
+const layout = computed(() => layoutWorkflow(nodesData.value));
+const renderNodes = computed(() => layout.value.nodes);
 const renderEdges = computed(() => autoCalEdge(nodesData.value));
 
 function handleAddNode(nodeId: string, option: AddNodeOption) {
