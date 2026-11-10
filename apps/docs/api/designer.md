@@ -3,8 +3,8 @@
 `Designer` 是工作流画布组件，通过模型同步节点数据，通过事件通知业务侧打开配置表单。
 
 ```ts
-import { Designer } from "@bubblesjs/workflow-vue";
-import "@bubblesjs/workflow-vue/style.css";
+import { Designer } from "@bubblesjs/workflow-vue-core";
+import "@bubblesjs/workflow-vue-core/style.css";
 ```
 
 ## 基本使用
@@ -17,10 +17,11 @@ import "@bubblesjs/workflow-vue/style.css";
 
 ## Props
 
-| 名称    | 类型                      | 必填 | 说明                                        |
-| ------- | ------------------------- | ---- | ------------------------------------------- |
-| `id`    | `string`                  | 是   | Vue Flow 实例 ID；同一页面内保持唯一        |
-| `nodes` | `WorkflowNode<TConfig>[]` | 是   | 通过 `v-model:nodes` 绑定流程结构与业务配置 |
+| 名称       | 类型                      | 必填 | 说明                                        |
+| ---------- | ------------------------- | ---- | ------------------------------------------- |
+| `id`       | `string`                  | 是   | Vue Flow 实例 ID；同一页面内保持唯一        |
+| `nodes`    | `WorkflowNode<TConfig>[]` | 是   | 通过 `v-model:nodes` 绑定流程结构与业务配置 |
+| `readonly` | `boolean`                 | 否   | 是否只读；默认 `false`                      |
 
 `Designer` 支持泛型 `TConfig`，由节点模型中的业务配置类型推断。每个实例应使用独立的节点数组。
 
@@ -48,6 +49,16 @@ interface WorkflowNodeClickEvent {
 <Designer id="expense-flow" :nodes="nodes" @update:nodes="nodes = $event" />
 ```
 
+## 只读模式
+
+```vue
+<Designer id="expense-preview" :nodes="nodes" readonly />
+```
+
+`readonly` 为 `true` 时，隐藏添加节点、增加分支和删除入口，禁用鼠标与键盘触发的节点点击，不触发 `node-click` 或 `update:nodes`。画布仍支持平移与缩放，使用方更新 `nodes` 后会正常刷新展示。
+
+只读展示会先过滤添加入口，再重新计算布局和连线，不保留添加节点的空位。条件规则、兜底条件和循环结构仍会保留；原始 `nodes` 不会被修改，关闭只读后恢复添加入口。
+
 ## 布局行为
 
 - 初次挂载自动适配视图。
@@ -58,6 +69,6 @@ interface WorkflowNodeClickEvent {
 
 ## 扩展边界
 
-当前没有公开的 slots、实例方法、只读开关、缩放属性或 Vue Flow 参数透传接口。不要依赖组件内部 DOM、内部工具函数或私有实例实现业务逻辑。
+当前没有公开的 slots、实例方法、缩放属性或 Vue Flow 参数透传接口。不要依赖组件内部 DOM、内部工具函数或私有实例实现业务逻辑。
 
 基础卡片可独立使用，见[节点卡片](./cards)。它们不会自动注册为 `Designer` 的自定义节点。

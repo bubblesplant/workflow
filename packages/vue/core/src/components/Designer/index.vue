@@ -9,10 +9,14 @@
       :nodes-draggable="false"
       :nodes-connectable="false"
       :edges-updatable="false"
+      :elements-selectable="!readonly"
+      :nodes-focusable="!readonly"
+      :edges-focusable="!readonly"
     >
       <template #[`node-${WORKFLOW_NODE_SLOT}`]="nodeProps">
         <Node
           :data="nodeProps.data"
+          :readonly="readonly"
           :deletable="canDeleteNode(nodesData, nodeProps.id)"
           :allow-exit-loop="isInsideLoop(nodesData, nodeProps.id)"
           @add-node="handleAddNode(nodeProps.id, $event)"
@@ -53,8 +57,9 @@ import { computed } from "vue";
 import type { VueFlowNodeProps, WorkflowNodeClickEvent } from "../../types.ts";
 import { autoCalEdge } from "../../utils/auto-cal-edge.ts";
 
-const { id } = defineProps<{
+const { id, readonly = false } = defineProps<{
   id: string;
+  readonly?: boolean;
 }>();
 
 const nodesData = defineModel<VueFlowNodeProps<TConfig>[]>("nodes", {
@@ -65,24 +70,32 @@ const emit = defineEmits<{
   nodeClick: [payload: WorkflowNodeClickEvent];
 }>();
 
-const layout = computed(() => layoutWorkflow(nodesData.value));
+const visibleNodes = computed(() =>
+  readonly
+    ? nodesData.value.filter((node) => node.data?.type !== WORKFLOW_NODE_TYPE.ADD)
+    : nodesData.value,
+);
+const layout = computed(() => layoutWorkflow(visibleNodes.value));
 const renderNodes = computed(() => layout.value.nodes);
-const renderEdges = computed(() => autoCalEdge(nodesData.value));
+const renderEdges = computed(() => autoCalEdge(visibleNodes.value));
 
 function handleAddNode(nodeId: string, option: AddNodeOption) {
+  if (readonly) return;
   nodesData.value = insertNode(nodesData.value, nodeId, option);
 }
 
 function handleAddBranch(nodeId: string) {
+  if (readonly) return;
   nodesData.value = insertConditionBranch(nodesData.value, nodeId);
 }
 
 function handleDelete(nodeId: string) {
-  if (!canDeleteNode(nodesData.value, nodeId)) return;
+  if (readonly || !canDeleteNode(nodesData.value, nodeId)) return;
   nodesData.value = removeNode(nodesData.value, nodeId);
 }
 
 function handleNodeClick(nodeId: string) {
+  if (readonly) return;
   const node = nodesData.value.find((entry) => entry.id === nodeId);
   if (!node?.data) return;
   const type = node.data.type;

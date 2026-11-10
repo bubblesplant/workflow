@@ -1,0 +1,80 @@
+{
+  "viewport": {
+    "desktop": "1720 × 1100",
+    "mobile": "390 × 844"
+  },
+  "checks": [
+    {
+      "name": "按状态筛选",
+      "passed": true
+    },
+    {
+      "name": "组合搜索",
+      "passed": true
+    },
+    {
+      "name": "空状态",
+      "passed": true
+    },
+    {
+      "name": "清除筛选",
+      "passed": true
+    },
+    {
+      "name": "节点与详情联动",
+      "passed": true
+    },
+    {
+      "name": "定位当前节点",
+      "passed": true
+    },
+    {
+      "name": "流转记录页签",
+      "passed": true
+    },
+    {
+      "name": "申请信息页签",
+      "passed": true
+    },
+    {
+      "name": "拒绝状态",
+      "passed": true
+    },
+    {
+      "name": "完成流程包含结束事件",
+      "passed": true
+    },
+    {
+      "name": "日期筛选",
+      "passed": true
+    },
+    {
+      "name": "导出记录",
+      "passed": true
+    },
+    {
+      "name": "展开流程",
+      "passed": true
+    },
+    {
+      "name": "收起流程",
+      "passed": true
+    },
+    {
+      "name": "手机无页面横向溢出",
+      "passed": true
+    },
+    {
+      "name": "手机节点详情抽屉",
+      "passed": true
+    },
+    {
+      "name": "关闭手机详情抽屉",
+      "passed": true
+    },
+    {
+      "name": "浏览器没有脚本错误",
+      "passed": true
+    }
+  ]
+}

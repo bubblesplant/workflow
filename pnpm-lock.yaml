@@ -268,7 +268,7 @@ importers:
 
   apps/docs:
     dependencies:
-      '@bubblesjs/workflow-vue':
+      '@bubblesjs/workflow-vue-core':
         specifier: workspace:*
         version: link:../../packages/vue/core
       vue:
@@ -296,7 +296,10 @@ importers:
 
   apps/playgroud/vue:
     dependencies:
-      '@bubblesjs/workflow-vue':
+      '@bubblesjs/workflow-vue-history':
+        specifier: workspace:*
+        version: link:../../../packages/vue/history
+      '@bubblesjs/workflow-vue-core':
         specifier: workspace:*
         version: link:../../../packages/vue/core
       vue:
@@ -352,6 +355,30 @@ importers:
       antdv-next:
         specifier: 'catalog:'
         version: 1.7.1(vue@3.5.44(typescript@6.0.3))
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      unplugin-vue:
+        specifier: 'catalog:'
+        version: 8.0.1(@types/node@26.6.6)(@volar/typescript@2.4.30(typescript@6.0.3))(@vue/language-core@3.3.14)(jiti@2.7.0)(typescript@6.0.3)(vue-tsc@3.3.14(typescript@6.0.3))(vue@3.5.44(typescript@6.0.3))(yaml@2.9.1)
+      vite:
+        specifier: 'catalog:'
+        version: '@voidzero-dev/vite-plus-core@1.5.0(@types/node@26.6.6)(@volar/typescript@2.4.30(typescript@6.0.3))(@vue/language-core@3.3.14)(jiti@2.7.0)(typescript@6.0.3)(vue-tsc@3.3.14(typescript@6.0.3))(yaml@2.9.1)'
+      vite-plus:
+        specifier: 'catalog:'
+        version: 1.5.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(@volar/typescript@2.4.30(typescript@6.0.3))(@vue/language-core@3.3.14)(jiti@2.7.0)(typescript@6.0.3)(vue-tsc@3.3.14(typescript@6.0.3))(yaml@2.9.1)
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.44(typescript@6.0.3)
+      vue-tsc:
+        specifier: 'catalog:'
+        version: 3.3.14(typescript@6.0.3)
+
+  packages/vue/history:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.6
       typescript:
         specifier: 'catalog:'
         version: 6.0.3

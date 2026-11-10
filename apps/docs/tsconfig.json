@@ -3,7 +3,7 @@
   "compilerOptions": {
     "types": ["node", "vite/client"],
     "paths": {
-      "@bubblesjs/workflow-vue": ["../../packages/vue/core/src/index.ts"]
+      "@bubblesjs/workflow-vue-core": ["../../packages/vue/core/src/index.ts"]
     }
   },
   "include": [

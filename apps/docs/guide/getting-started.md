@@ -1,6 +1,6 @@
 # 快速开始
 
-本页介绍如何在 Vue 应用中使用 `@bubblesjs/workflow-vue`。运行本仓库请查看[本地开发](../development/)。
+本页介绍如何在 Vue 应用中使用 `@bubblesjs/workflow-vue-core`。展示审批流转记录请查看[流程记录指南](./history)；运行本仓库请查看[本地开发](../development/)。
 
 ## 安装
 
@@ -13,15 +13,15 @@
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @bubblesjs/workflow-vue
+pnpm add @bubblesjs/workflow-vue-core
 ```
 
 ```bash [npm]
-npm install @bubblesjs/workflow-vue
+npm install @bubblesjs/workflow-vue-core
 ```
 
 ```bash [yarn]
-yarn add @bubblesjs/workflow-vue
+yarn add @bubblesjs/workflow-vue-core
 ```
 
 :::
@@ -31,7 +31,7 @@ yarn add @bubblesjs/workflow-vue
 ```json
 {
   "dependencies": {
-    "@bubblesjs/workflow-vue": "workspace:*"
+    "@bubblesjs/workflow-vue-core": "workspace:*"
   }
 }
 ```
@@ -54,8 +54,8 @@ import {
   createDefaultNodes,
   type WorkflowNode,
   type WorkflowNodeClickEvent,
-} from "@bubblesjs/workflow-vue";
-import "@bubblesjs/workflow-vue/style.css";
+} from "@bubblesjs/workflow-vue-core";
+import "@bubblesjs/workflow-vue-core/style.css";
 
 interface BusinessConfig {
   approverIds?: string[];
@@ -101,3 +101,4 @@ const draft = JSON.stringify(nodes.value);
 - [交互示例](../examples/)：直接体验预置流程和配置表单。
 - [节点与流程结构](./nodes)：理解 `parentNode`、条件与循环。
 - [Designer API](../api/designer)：查看组件属性与事件。
+- [流程记录](./history)：接入独立的 history 包，展示操作人、处理意见和附件。

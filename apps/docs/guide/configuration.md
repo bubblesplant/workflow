@@ -6,7 +6,7 @@
 
 ```ts
 import { ref } from "vue";
-import { createDefaultNodes, type WorkflowNode } from "@bubblesjs/workflow-vue";
+import { createDefaultNodes, type WorkflowNode } from "@bubblesjs/workflow-vue-core";
 
 interface BusinessConfig {
   approverIds?: string[];
@@ -28,7 +28,7 @@ const nodes = ref<WorkflowNode<BusinessConfig>[]>(createDefaultNodes<BusinessCon
 
 ```ts
 import { computed, ref } from "vue";
-import type { WorkflowNodeClickEvent } from "@bubblesjs/workflow-vue";
+import type { WorkflowNodeClickEvent } from "@bubblesjs/workflow-vue-core";
 
 const selectedNodeId = ref("");
 const selectedNode = computed(() => nodes.value.find((node) => node.id === selectedNodeId.value));
@@ -69,7 +69,7 @@ function saveNodeConfig() {
 }
 ```
 
-普通业务节点会展示新的 `label` 和 `description`。开始、结束、分支容器以及条件卡片使用内置标题；条件的业务表达式应展示在自己的配置面板中。
+普通业务节点会展示新的 `label` 和 `description`。开始、结束、分支容器以及条件卡片使用内置标题；条件卡片正文可通过 `data.description` 自定义，未传时保留内置文案。条件的业务表达式保存在 `data.config` 中，通过自己的配置面板编辑。
 
 ## 处理删除与切换
 

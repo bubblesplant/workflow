@@ -3,8 +3,8 @@
 `StartCard`、`EndCard` 和 `CommonCard` 可作为独立展示组件使用。它们不包含流程编排能力，也不会自动成为 `Designer` 的自定义节点。
 
 ```ts
-import { StartCard, EndCard, CommonCard } from "@bubblesjs/workflow-vue";
-import "@bubblesjs/workflow-vue/style.css";
+import { StartCard, EndCard, CommonCard } from "@bubblesjs/workflow-vue-core";
+import "@bubblesjs/workflow-vue-core/style.css";
 ```
 
 ## StartCard / EndCard
@@ -29,14 +29,15 @@ import "@bubblesjs/workflow-vue/style.css";
 
 ### Props
 
-| 属性          | 类型      | 默认值    | 说明                                 |
-| ------------- | --------- | --------- | ------------------------------------ |
-| `title`       | `string`  | —         | 卡片标题                             |
-| `description` | `string`  | `""`      | 默认正文及提示文本                   |
-| `color`       | `string`  | `#5075dc` | 标题背景，可传入 CSS 渐变            |
-| `deletable`   | `boolean` | `true`    | 是否提供删除入口                     |
-| `showArrow`   | `boolean` | `true`    | 是否展示正文右侧箭头                 |
-| `selected`    | `boolean` | `false`   | 通过 `v-model:selected` 同步选中状态 |
+| 属性          | 类型      | 默认值    | 说明                                             |
+| ------------- | --------- | --------- | ------------------------------------------------ |
+| `title`       | `string`  | —         | 卡片标题                                         |
+| `description` | `string`  | `""`      | 默认正文及提示文本                               |
+| `color`       | `string`  | `#5075dc` | 标题背景，可传入 CSS 渐变                        |
+| `deletable`   | `boolean` | `true`    | 是否提供删除入口                                 |
+| `showArrow`   | `boolean` | `true`    | 是否展示正文右侧箭头                             |
+| `readonly`    | `boolean` | `false`   | 只读展示，隐藏删除和箭头，禁用点击及选中状态更新 |
+| `selected`    | `boolean` | `false`   | 通过 `v-model:selected` 同步选中状态             |
 
 ### Events
 
@@ -47,6 +48,8 @@ import "@bubblesjs/workflow-vue/style.css";
 | `update:selected` | `boolean`    | 点击卡片或点击卡片外部导致状态变化      |
 
 卡片不会自行从数据中移除；业务侧需在 `delete` 事件中处理删除。
+
+设置 `readonly` 后不会触发 `click`、`delete` 或 `update:selected`，也不会显示选中样式。
 
 ### Slots
 
@@ -71,8 +74,8 @@ import "@bubblesjs/workflow-vue/style.css";
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { CommonCard } from "@bubblesjs/workflow-vue";
-import "@bubblesjs/workflow-vue/style.css";
+import { CommonCard } from "@bubblesjs/workflow-vue-core";
+import "@bubblesjs/workflow-vue-core/style.css";
 
 const selected = ref(false);
 function openSettings() {

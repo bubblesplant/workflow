@@ -7,7 +7,7 @@ import {
   type VueFlowNode,
   type WorkflowNode,
   type WorkflowNodeClickEvent,
-} from "@bubblesjs/workflow-vue";
+} from "@bubblesjs/workflow-vue-core";
 import { h } from "vue";
 
 interface BusinessConfig {
@@ -23,6 +23,7 @@ const runtimeNode: VueFlowNode<BusinessConfig> = {
 const props: Parameters<typeof Designer<BusinessConfig>>[0] = {
   id: "consumer",
   nodes,
+  readonly: true,
   onNodeClick(event: WorkflowNodeClickEvent) {
     event.id.toUpperCase();
   },

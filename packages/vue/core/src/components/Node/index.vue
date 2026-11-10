@@ -8,6 +8,7 @@
   <End v-else-if="data?.type === WORKFLOW_NODE_TYPE.END" />
   <Branch
     v-else-if="data?.type === WORKFLOW_NODE_TYPE.CONDITION_BRANCH"
+    :readonly="readonly"
     :deletable="deletable"
     @click="emit('click', $event)"
     @add-branch="emit('addBranch', $event)"
@@ -20,6 +21,7 @@
     :description="data?.description"
     :condition-index="data?.conditionIndex"
     :is-default-condition="data?.isDefaultCondition"
+    :readonly="readonly"
     :deletable="deletable"
     @click="emit('click', $event)"
     @delete="emit('delete', $event)"
@@ -36,10 +38,16 @@ import { WORKFLOW_NODE_TYPE } from "../../utils";
 import type { AddNodeOption } from "../../utils/add-node";
 import type { NodeData } from "../../types";
 
-const { data, deletable, allowExitLoop } = defineProps<{
+const {
+  data,
+  deletable,
+  allowExitLoop,
+  readonly = false,
+} = defineProps<{
   data: NodeData;
   deletable: boolean;
   allowExitLoop: boolean;
+  readonly?: boolean;
 }>();
 
 const emit = defineEmits<{

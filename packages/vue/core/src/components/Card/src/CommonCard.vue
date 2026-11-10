@@ -2,20 +2,21 @@
   <div
     ref="card"
     class="workflow-common-card"
-    :class="{ 'is-selected': selected }"
+    :class="{ 'is-selected': !readonly && selected, 'is-readonly': readonly }"
     :style="{
       '--workflow-card-color': color,
       width: `${dimensions.width}px`,
       height: `${dimensions.height}px`,
     }"
   >
-    <button
+    <component
+      :is="readonly ? 'div' : 'button'"
       class="workflow-common-card__trigger"
-      type="button"
-      :aria-pressed="selected"
+      :type="readonly ? undefined : 'button'"
+      :aria-pressed="readonly ? undefined : selected"
       @click="select"
     >
-      <span class="workflow-common-card__header" :class="{ 'has-delete': deletable }">
+      <span class="workflow-common-card__header" :class="{ 'has-delete': !readonly && deletable }">
         <span v-if="$slots.icon" class="workflow-common-card__icon" aria-hidden="true">
           <slot name="icon" />
         </span>
@@ -30,7 +31,7 @@
           </span>
         </Tooltip>
         <img
-          v-if="showArrow"
+          v-if="showArrow && !readonly"
           class="workflow-common-card__arrow"
           :src="chevronRightIcon"
           width="18"
@@ -39,9 +40,9 @@
           aria-hidden="true"
         />
       </span>
-    </button>
+    </component>
     <button
-      v-if="deletable"
+      v-if="!readonly && deletable"
       class="workflow-common-card__delete nodrag nopan"
       type="button"
       :aria-label="`删除${title}`"
@@ -71,19 +72,21 @@ const {
   color = "#5075dc",
   deletable = true,
   showArrow = true,
+  readonly = false,
 } = defineProps<{
   title?: string;
   description?: string;
   color?: string;
   deletable?: boolean;
   showArrow?: boolean;
+  readonly?: boolean;
 }>();
 
 const selected = defineModel<boolean>("selected", { default: false });
 const card = useTemplateRef<HTMLElement>("card");
 
 onClickOutside(card, () => {
-  selected.value = false;
+  if (!readonly) selected.value = false;
 });
 
 const emit = defineEmits<{
@@ -92,11 +95,13 @@ const emit = defineEmits<{
 }>();
 
 function select(event: MouseEvent) {
+  if (readonly) return;
   selected.value = true;
   emit("click", event);
 }
 
 function confirmDelete(event: MouseEvent) {
+  if (readonly) return;
   Modal.confirm({
     type: "confirm",
     title: "确认删除",
@@ -106,7 +111,9 @@ function confirmDelete(event: MouseEvent) {
     cancelText: "取消",
     okButtonProps: { danger: true },
     autoFocusButton: "cancel",
-    onOk: () => emit("delete", event),
+    onOk: () => {
+      if (!readonly) emit("delete", event);
+    },
   });
 }
 </script>
@@ -127,7 +134,7 @@ function confirmDelete(event: MouseEvent) {
     box-shadow 160ms ease;
 }
 
-.workflow-common-card:hover {
+.workflow-common-card:not(.is-readonly):hover {
   --workflow-card-shadow: 0 8px 24px rgb(31 35 41 / 14%);
 }
 
@@ -156,6 +163,10 @@ function confirmDelete(event: MouseEvent) {
 .workflow-common-card__trigger:focus,
 .workflow-common-card__delete:focus {
   outline: none;
+}
+
+.workflow-common-card.is-readonly .workflow-common-card__trigger {
+  cursor: default;
 }
 
 .workflow-common-card__header {
