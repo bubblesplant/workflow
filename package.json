@@ -27,6 +27,7 @@
     "lint:ox:fix": "vp lint . --fix",
     "lint:vue": "eslint . --max-warnings=0",
     "lint:vue:fix": "eslint . --fix --max-warnings=0",
+    "prepare": "pnpm hooks:install",
     "preview": "vp run vue-playground#preview",
     "ready": "pnpm run ci",
     "release": "pnpm ready && changeset publish",
