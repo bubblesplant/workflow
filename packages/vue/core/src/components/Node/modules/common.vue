@@ -4,6 +4,7 @@
     :description="nodeDescription"
     :color="nodeConfig.color"
     :show-arrow="!isFallbackCondition"
+    :readonly="readonly"
     :deletable="deletable"
     @click="emit('click', $event)"
     @delete="emit('delete', $event)"
@@ -23,10 +24,11 @@ import { WORKFLOW_NODE_CONFIG, type CommonNodeType } from "../../../utils/node-c
 const {
   title,
   type = WORKFLOW_NODE_TYPE.COMMON,
-  description = "",
+  description,
   conditionIndex = 1,
   isDefaultCondition = false,
   deletable = true,
+  readonly = false,
 } = defineProps<{
   title?: string;
   type?: CommonNodeType;
@@ -34,6 +36,7 @@ const {
   conditionIndex?: number;
   isDefaultCondition?: boolean;
   deletable?: boolean;
+  readonly?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -51,8 +54,12 @@ const nodeTitle = computed(() => {
 });
 
 const nodeDescription = computed(() => {
-  if (!isCondition.value) return description;
-  return isFallbackCondition.value ? "未满足其他条件时进入此分支" : "点击查看条件规则";
+  if (!isCondition.value || description !== undefined) return description ?? "";
+  return isFallbackCondition.value
+    ? "未满足其他条件时进入此分支"
+    : readonly
+      ? "条件规则"
+      : "点击查看条件规则";
 });
 </script>
 

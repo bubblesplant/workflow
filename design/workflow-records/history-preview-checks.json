@@ -1,0 +1,52 @@
+{
+  "checks": [
+    {
+      "name": "可直接打开流转记录",
+      "passed": true
+    },
+    {
+      "name": "显示三条审批事件",
+      "passed": true
+    },
+    {
+      "name": "当前待审批单独突出",
+      "passed": true
+    },
+    {
+      "name": "审批意见使用正文",
+      "passed": true
+    },
+    {
+      "name": "不再使用宽灰框展示完整记录",
+      "passed": true
+    },
+    {
+      "name": "拒绝状态与意见正确显示",
+      "passed": true
+    },
+    {
+      "name": "撤回状态正确显示",
+      "passed": true
+    },
+    {
+      "name": "已完成记录展示完整五条事件",
+      "passed": true
+    },
+    {
+      "name": "手机布局无水平溢出",
+      "passed": true
+    },
+    {
+      "name": "手机列表没有内部水平溢出",
+      "passed": true
+    },
+    {
+      "name": "可以返回流程图",
+      "passed": true
+    },
+    {
+      "name": "申请信息仍可访问",
+      "passed": true
+    }
+  ]
+}

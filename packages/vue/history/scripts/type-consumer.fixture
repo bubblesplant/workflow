@@ -1,0 +1,105 @@
+import {
+  WorkflowHistory,
+  WorkflowAvatar,
+  WorkflowTimeline,
+  WorkflowTimelineDot,
+  WorkflowTimelineItem,
+  WorkflowTimelineTag,
+  type WorkflowAvatarProps,
+  type WorkflowTimelineProps,
+  type WorkflowTimelineDotProps,
+  type WorkflowTimelineItemProps,
+  type WorkflowTimelineTagProps,
+  type WorkflowStatus,
+  type WorkflowHistoryAttachment,
+  type WorkflowHistoryAttachmentEvent,
+  type WorkflowHistoryField,
+  type WorkflowHistoryProps,
+  type WorkflowHistoryRecord,
+  type WorkflowHistoryStatus,
+  type WorkflowHistoryToggleEvent,
+  type WorkflowHistoryUser,
+} from "@bubblesjs/workflow-vue-history";
+import { h } from "vue";
+
+h(WorkflowHistory);
+h(WorkflowHistory, null, {
+  default: () => h("span", "流程记录插槽内容"),
+});
+
+const operator: WorkflowHistoryUser = { name: "张明", description: "项目部" };
+const attachment: WorkflowHistoryAttachment = { id: "quote", name: "报价单.pdf", url: "/quote.pdf" };
+const fields: readonly WorkflowHistoryField[] = Object.freeze([
+  { label: "金额", value: 0 },
+  { label: "加急", value: false },
+]);
+const status: WorkflowHistoryStatus = "success";
+const records: readonly WorkflowHistoryRecord[] = Object.freeze([
+  { id: "review", title: "主管审批", operator, status, fields, attachments: [attachment] },
+]);
+const props: WorkflowHistoryProps = { records, expandedKeys: Object.freeze(["review"]) };
+h(WorkflowHistory, {
+  ...props,
+  "onUpdate:expandedKeys": (keys: string[]) => keys.includes("review"),
+  onToggle: ({ record, expanded }: WorkflowHistoryToggleEvent) => record.id && expanded,
+  onAttachmentClick: ({ attachment, event }: WorkflowHistoryAttachmentEvent) => {
+    event.preventDefault();
+    return attachment.id;
+  },
+});
+
+// @ts-expect-error 展示状态不能直接传入业务操作码。
+const invalidStatus: WorkflowHistoryStatus = "dispatch";
+// @ts-expect-error 每条记录需要稳定 id。
+const invalidRecord: WorkflowHistoryRecord = { title: "缺少编号" };
+// @ts-expect-error 展开键必须是字符串数组。
+h(WorkflowHistory, { expandedKeys: [1] });
+// @ts-expect-error 附件事件不是记录 ID 字符串。
+h(WorkflowHistory, { onAttachmentClick: (_id: string) => {} });
+void invalidStatus;
+void invalidRecord;
+
+const workflowStatus: WorkflowStatus = "processing";
+const avatarProps: WorkflowAvatarProps = { text: "张明", src: "/avatar.png" };
+const timelineProps: WorkflowTimelineProps = { label: "项目审批过程" };
+const dotProps: WorkflowTimelineDotProps = { type: workflowStatus };
+const itemProps: WorkflowTimelineItemProps = {
+  title: "任意业务标题",
+  type: workflowStatus,
+  defaultExpanded: true,
+  expanded: false,
+  collapsible: true,
+};
+const tagProps: WorkflowTimelineTagProps = { type: "success", text: "已转交" };
+
+// 组合 API 不需要 WorkflowHistoryRecord，业务内容由默认插槽直接提供。
+h(WorkflowTimeline, timelineProps, {
+  default: () => [h(WorkflowTimelineItem, {
+    ...itemProps,
+    "onUpdate:expanded": (expanded: boolean) => expanded,
+    onToggle: (expanded: boolean) => expanded,
+  }, {
+    title: () => [h(WorkflowAvatar, avatarProps), h("a", { href: "/business/1" }, "项目立项")],
+    dot: () => [h(WorkflowTimelineDot, dotProps)],
+    status: () => [h(WorkflowTimelineTag, tagProps)],
+    default: () => [h("section", { "data-business-id": "PRJ-001" }, "由业务方提供的任意详情")],
+  })],
+});
+
+type ItemSlots = InstanceType<typeof WorkflowTimelineItem>["$slots"];
+const scopedSlots: ItemSlots = {
+  title: ({ expanded, toggle }) => [h("button", { type: "button", onClick: toggle }, String(expanded))],
+  status: ({ expanded }) => [h("span", expanded ? "展开" : "收起")],
+  dot: ({ toggle }) => [h("button", { type: "button", onClick: toggle }, "切换")],
+  default: ({ expanded }) => [h("article", `业务内容 ${expanded}`)],
+};
+h(WorkflowTimelineItem, itemProps, scopedSlots);
+
+// @ts-expect-error 头像文本为必填字符串。
+h(WorkflowAvatar, { text: 123 });
+// @ts-expect-error 不能直接用业务操作码作为展示状态。
+h(WorkflowTimelineDot, { type: "dispatch" });
+// @ts-expect-error 单条展开状态必须是布尔值。
+h(WorkflowTimelineItem, { expanded: ["review"] });
+// @ts-expect-error 单条 toggle 事件传递布尔值，不是记录对象。
+h(WorkflowTimelineItem, { onToggle: (_record: WorkflowHistoryRecord) => {} });

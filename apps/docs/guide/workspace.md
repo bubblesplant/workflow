@@ -7,13 +7,13 @@ apps/
   playgroud/vue/     Vue 预览应用，vue-playground
   docs/              VitePress 文档站点，docs
 packages/
-  vue/core/          Vue 组件包，@bubblesjs/workflow-vue
+  vue/core/          Vue 组件包，@bubblesjs/workflow-vue-core
 tsconfig/            共享 TypeScript 配置
 ```
 
 `pnpm-workspace.yaml` 匹配 `apps/*`、`apps/*/*`、`packages/*` 和 `packages/*/*`。每个子项目维护自己的 `package.json`、入口、构建配置和脚本；根目录维护公共命令、依赖版本、锁文件和质量检查。
 
-`@bubblesjs/workflow-vue` 是公开包，根项目、文档和预览应用设置为 `private: true`。`tsconfig/` 是普通配置目录，不作为工作区包。
+`@bubblesjs/workflow-vue-core` 是公开包，根项目、文档和预览应用设置为 `private: true`。`tsconfig/` 是普通配置目录，不作为工作区包。
 
 ## 依赖管理
 
@@ -32,7 +32,7 @@ tsconfig/            共享 TypeScript 配置
 ```json
 {
   "dependencies": {
-    "@bubblesjs/workflow-vue": "workspace:*"
+    "@bubblesjs/workflow-vue-core": "workspace:*"
   }
 }
 ```
@@ -50,7 +50,7 @@ tsconfig/            共享 TypeScript 配置
 应用入口统一导入组件样式：
 
 ```ts
-import "@bubblesjs/workflow-vue/style.css";
+import "@bubblesjs/workflow-vue-core/style.css";
 ```
 
 开发模式在 Vite 中精确匹配组件包和样式的源码别名，并通过 TypeScript `paths` 获得源码类型。生产构建通过包的 `exports` 加载已构建产物。新增公开入口时，同时维护 `exports`、开发别名和类型映射，确保两种模式都能解析。

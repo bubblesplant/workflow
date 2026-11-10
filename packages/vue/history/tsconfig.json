@@ -1,0 +1,7 @@
+{
+  "extends": "../../../tsconfig/vue.json",
+  "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts"],
+  "vueCompilerOptions": {
+    "strictTemplates": true
+  }
+}

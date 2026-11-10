@@ -1,6 +1,6 @@
 # 版本与发布
 
-`@bubblesjs/workflow-vue` 是公开的 npm 包，首发版本为 `0.1.0`，已设置 `publishConfig.access: "public"`。根项目、`docs` 和 `vue-playground` 保持 `private: true`，不参与 npm 发布。组件包构建 ESM、CJS、类型声明和 CSS，供工作区应用和外部项目引用。
+`@bubblesjs/workflow-vue-core` 是公开的 npm 包，首发版本为 `0.1.0`，已设置 `publishConfig.access: "public"`。根项目、`docs` 和 `vue-playground` 保持 `private: true`，不参与 npm 发布。组件包构建 ESM、CJS、类型声明和 CSS，供工作区应用和外部项目引用。
 
 `pnpm verify:packages` 验证本地产物，并将 tarball 安装到独立项目，在最低支持的 Vue 版本下分别检查 ESM、CJS 声明。独立项目使用 `strict: true`、`skipLibCheck: false` 和 `types: []`，确保声明所需的类型随包提供，不依赖工作区的类型自动加载；该检查已包含在 `pnpm ready` 中。
 
@@ -10,7 +10,7 @@ Changesets 和发布工作流负责公开包的版本与发布。CI、发布和�
 
 首次发布前完成以下配置：
 
-1. 核对目标包的包名与版本，确保没有 `private: true`，且 `publishConfig.access` 为 `public`；当前包名为 `@bubblesjs/workflow-vue`，首发版本为 `0.1.0`。
+1. 核对目标包的包名与版本，确保没有 `private: true`，且 `publishConfig.access` 为 `public`；当前包名为 `@bubblesjs/workflow-vue-core`，首发版本为 `0.1.0`。
 2. 完善 `repository`、`homepage`、`bugs`、作者和许可证信息。
 3. 核对 `files`、`exports`、ESM/CJS 与类型入口，以及 `style.css` 导出。
 4. 保持 Vue 为 peer dependency，并验证包的使用方能加载组件及样式。

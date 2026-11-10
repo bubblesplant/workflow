@@ -1,6 +1,6 @@
 # Workflow
 
-基于 **pnpm workspace + Vue 3 + TypeScript + Vite+** 的组件开发工作区。`packages/vue/core` 编写 Vue 组件，`apps/playgroud/vue` 引用组件并提供交互预览，`apps/docs` 保存 VitePress 文档。
+基于 **pnpm workspace + Vue 3 + TypeScript + Vite+** 的组件开发工作区。`packages/vue/core` 编写流程设计器，`packages/vue/history` 编写流程记录展示组件，`apps/playgroud/vue` 引用组件并提供交互预览，`apps/docs` 保存 VitePress 文档。
 
 [文档](https://bubblesplant.github.io/workflow/) · [Playground](https://bubblesplant.github.io/workflow/playground/) · [GitHub](https://github.com/bubblesplant/workflow)
 
@@ -14,7 +14,7 @@ pnpm install
 pnpm dev
 ```
 
-打开 <http://localhost:5173>。开发服务通过源码别名引用组件，修改 `packages/vue/core/src/` 后即可看到更新，无需先构建组件包。
+打开 <http://localhost:5173>，通过顶部菜单切换“流程设计器”和“流程记录”。页面使用 Vue 动态组件与 `KeepAlive` 切换，返回设计器时保留编辑状态。开发服务通过源码别名引用组件，修改 `packages/vue/core/src/` 或 `packages/vue/history/src/` 后即可看到更新，无需先构建组件包。
 
 ## 目录
 
@@ -23,7 +23,8 @@ apps/
   playgroud/vue/       Vue 组件预览应用，包名 vue-playground
   docs/                VitePress 中文文档
 packages/
-  vue/core/            Vue 组件包，包名 @bubblesjs/workflow-vue
+  vue/core/            Vue 组件包，包名 @bubblesjs/workflow-vue-core
+  vue/history/         Vue 流程记录组件包，包名 @bubblesjs/workflow-vue-history
 tsconfig/              共享 TypeScript 配置
 .changeset/            公开包的版本管理配置
 ```
@@ -38,6 +39,8 @@ tsconfig/              共享 TypeScript 配置
 | `pnpm preview`                                            | 预览已构建的 playground                |
 | `pnpm dev:core`                                           | 监听并重新打包 Vue 组件库              |
 | `pnpm build:core`                                         | 只构建 Vue 组件库                      |
+| `pnpm dev:history`                                        | 监听并重新打包流程记录组件库           |
+| `pnpm build:history`                                      | 只构建流程记录组件库                   |
 | `pnpm build:vue`                                          | 按依赖顺序构建组件库与 Vue playground  |
 | `pnpm build`                                              | 构建整个工作区，包括文档               |
 | `pnpm typecheck`                                          | 检查根配置及各子项目类型               |
@@ -54,7 +57,7 @@ tsconfig/              共享 TypeScript 配置
 
 ## 引用组件
 
-应用在 `package.json` 中声明 `"@bubblesjs/workflow-vue": "workspace:*"`，按包名引用组件，并在应用入口导入样式：
+应用在 `package.json` 中声明 `"@bubblesjs/workflow-vue-core": "workspace:*"`，按包名引用组件，并在应用入口导入样式：
 
 ```vue
 <template>
@@ -68,8 +71,8 @@ import {
   createDefaultNodes,
   type WorkflowNode,
   type WorkflowNodeClickEvent,
-} from "@bubblesjs/workflow-vue";
-import "@bubblesjs/workflow-vue/style.css";
+} from "@bubblesjs/workflow-vue-core";
+import "@bubblesjs/workflow-vue-core/style.css";
 
 interface BusinessConfig {
   approverIds?: string[];
@@ -93,7 +96,9 @@ function handleNodeClick({ id }: WorkflowNodeClickEvent) {
 
 公共组件从 `packages/vue/core/src/index.ts` 导出。外部依赖版本统一放在 `pnpm-workspace.yaml` 的 `catalog` 中，子项目使用 `catalog:`，内部包使用 `workspace:*`。
 
-`@bubblesjs/workflow-vue` 为公开包，首发版本为 `0.1.0`，使用 Changesets 管理版本与发布；根项目、文档和预览应用保持私有。`pnpm verify:packages` 只验证本地产物，不执行发布。
+流程记录组件从 `packages/vue/history/src/index.ts` 导出，使用独立包 `@bubblesjs/workflow-vue-history`。公开头像、状态圆点、状态标签、时间轴条目和时间轴五个小组件，`WorkflowTimelineItem` 的正文由使用方通过默认插槽传入。`WorkflowHistory` 基于这些组件组合，接收记录数组并协调展开状态。Playground 的“流程记录”提供直接组合示例与静态记录列表，支持展开详情和预览附件；接入方式见 [history 说明](packages/vue/history/README.md)与[组件 API](apps/docs/api/history.md)。
+
+`@bubblesjs/workflow-vue-core` 与 `@bubblesjs/workflow-vue-history` 为公开包，首发版本均为 `0.1.0`，使用 Changesets 管理版本与发布；根项目、文档和预览应用保持私有。`pnpm verify:packages` 只验证本地产物，不执行发布。
 
 ## 格式化与保存
 
@@ -101,7 +106,7 @@ function handleNodeClick({ id }: WorkflowNodeClickEvent) {
 
 运行 `pnpm format` 格式化整个工作区，`pnpm format:check` 检查格式。`pnpm lint` / `pnpm lint:fix` 汇总执行 Oxlint 与 ESLint 检查 / 修复，`pnpm lint:ox` 和 `pnpm lint:vue` 可分别执行。提交前对 Vue 文件依次执行 Oxlint 修复、ESLint 修复和 Oxfmt 格式化。
 
-VS Code 可以打开仓库根目录，也可以单独打开 `packages/vue/core` 或 `apps/playgroud/vue`；这三个目录均提供独立的 `.vscode` 保存配置。首次打开时，请安装并启用 Oxc、ESLint 和 Vue 扩展；两个子项目的 `.vscode/extensions.json` 已列出推荐，Oxc 也可通过 Vite+ 扩展包安装。安装后若当前窗口尚未加载扩展，执行“开发人员: 重新加载窗口”再保存。
+VS Code 可以打开仓库根目录，也可以单独打开 `packages/vue/core`、`packages/vue/history` 或 `apps/playgroud/vue`；这些目录均提供独立的 `.vscode` 保存配置。首次打开时，请安装并启用 Oxc、ESLint 和 Vue 扩展；子项目的 `.vscode/extensions.json` 已列出推荐，Oxc 也可通过 Vite+ 扩展包安装。安装后若当前窗口尚未加载扩展，执行“开发人员: 重新加载窗口”再保存。
 
 保存时统一使用 Oxfmt 格式化，同时执行 Oxlint 与 ESLint 各自的代码检查修复；ESLint 的格式化功能关闭。单独打开子项目时使用子目录的 `.vscode` 配置，VS Code 不会继承父目录的工作区设置。
 

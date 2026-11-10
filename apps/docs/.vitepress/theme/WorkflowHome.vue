@@ -40,7 +40,7 @@
 <span class="code-purple">import</span> {
   Designer,
   createDefaultNodes,
-} <span class="code-purple">from</span> <span class="code-green">"@bubblesjs/workflow-vue"</span>;
+} <span class="code-purple">from</span> <span class="code-green">"@bubblesjs/workflow-vue-core"</span>;
 
 <span class="code-purple">const</span> nodes = <span class="code-blue">ref</span>(<span class="code-blue">createDefaultNodes</span>());
 <span class="code-purple">&lt;/script&gt;</span>
@@ -99,7 +99,7 @@
           @click="copyInstall"
           :aria-label="copied ? '安装命令已复制' : '复制安装命令'"
         >
-          <code><span>$</span> pnpm add @bubblesjs/workflow-vue</code
+          <code><span>$</span> pnpm add @bubblesjs/workflow-vue-core</code
           ><span>{{ copied ? "已复制" : "复制" }}</span></button
         ><a :href="withBase('/guide/getting-started#安装')"
           >查看安装与环境要求 <span aria-hidden="true">↗</span></a
@@ -195,7 +195,7 @@ const copyError = ref("");
 
 async function copyInstall() {
   try {
-    await navigator.clipboard.writeText("pnpm add @bubblesjs/workflow-vue");
+    await navigator.clipboard.writeText("pnpm add @bubblesjs/workflow-vue-core");
     copied.value = true;
     copyError.value = "";
   } catch {

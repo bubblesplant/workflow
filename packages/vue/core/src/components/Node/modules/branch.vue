@@ -1,19 +1,21 @@
 <template>
   <div
     class="workflow-branch-node"
-    role="button"
-    tabindex="0"
-    aria-label="配置条件分支"
+    :class="{ 'is-readonly': readonly }"
+    :role="readonly ? undefined : 'button'"
+    :tabindex="readonly ? undefined : 0"
+    :aria-label="readonly ? undefined : '配置条件分支'"
     :style="{ width: `${dimensions.width}px`, height: `${dimensions.height}px` }"
-    @click="emit('click', $event)"
-    @keydown.enter.self.prevent="emit('click', $event)"
-    @keydown.space.self.prevent="emit('click', $event)"
+    @click="handleClick"
+    @keydown.enter.self.prevent="handleClick"
+    @keydown.space.self.prevent="handleClick"
   >
     <span class="workflow-branch-node__icon" aria-hidden="true">
       <img :src="conditionBranchIcon" width="20" height="20" alt="" />
     </span>
     <span class="workflow-branch-node__title">{{ title }}</span>
     <button
+      v-if="!readonly"
       class="workflow-branch-node__add nodrag nopan"
       type="button"
       aria-label="添加分支"
@@ -25,7 +27,7 @@
       <img :src="addIcon" width="18" height="18" alt="" aria-hidden="true" />
     </button>
     <button
-      v-if="deletable"
+      v-if="!readonly && deletable"
       class="workflow-branch-node__delete nodrag nopan"
       type="button"
       aria-label="删除条件分支"
@@ -46,8 +48,9 @@ import conditionBranchIcon from "../../../assets/icon/svg/condition-branch.svg?i
 import deleteIcon from "../../../assets/icon/svg/delete.svg?inline";
 import { WORKFLOW_NODE_DIMENSIONS } from "../../../utils/node-dimensions";
 
-const { deletable = true } = defineProps<{
+const { deletable = true, readonly = false } = defineProps<{
   deletable?: boolean;
+  readonly?: boolean;
 }>();
 
 const title = "条件分支";
@@ -60,7 +63,13 @@ const emit = defineEmits<{
   delete: [event: MouseEvent];
 }>();
 
+function handleClick(event: MouseEvent | KeyboardEvent) {
+  if (readonly) return;
+  emit("click", event);
+}
+
 function confirmDelete(event: MouseEvent) {
+  if (readonly) return;
   Modal.confirm({
     type: "confirm",
     title: "确认删除",
@@ -70,7 +79,9 @@ function confirmDelete(event: MouseEvent) {
     cancelText: "取消",
     okButtonProps: { danger: true },
     autoFocusButton: "cancel",
-    onOk: () => emit("delete", event),
+    onOk: () => {
+      if (!readonly) emit("delete", event);
+    },
   });
 }
 </script>
@@ -92,6 +103,10 @@ function confirmDelete(event: MouseEvent) {
 .workflow-branch-node:focus-visible {
   outline: 2px solid #b86320;
   outline-offset: 3px;
+}
+
+.workflow-branch-node.is-readonly {
+  cursor: default;
 }
 
 .workflow-branch-node__icon {

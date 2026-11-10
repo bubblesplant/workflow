@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-06",
+  "checks": [
+    {
+      "name": "流转记录可切换",
+      "pass": true
+    },
+    {
+      "name": "当前记录显示开始和两个审批环节",
+      "pass": true
+    },
+    {
+      "name": "待审批节点显示等待时长",
+      "pass": true
+    },
+    {
+      "name": "审批标题匹配引擎渐变",
+      "pass": true
+    },
+    {
+      "name": "完成记录包含抄送和结束",
+      "pass": true
+    },
+    {
+      "name": "抄送标题匹配引擎渐变",
+      "pass": true
+    },
+    {
+      "name": "拒绝结果和意见可见",
+      "pass": true
+    },
+    {
+      "name": "拒绝审批仍保留类型蓝色",
+      "pass": true
+    },
+    {
+      "name": "撤回记录不显示后续审批",
+      "pass": true
+    },
+    {
+      "name": "流程画布为纯白",
+      "pass": true
+    },
+    {
+      "name": "点击流程节点同步右侧详情",
+      "pass": true
+    },
+    {
+      "name": "定位当前节点",
+      "pass": true
+    },
+    {
+      "name": "桌面节点标题不溢出",
+      "pass": true
+    },
+    {
+      "name": "手机页面无横向溢出",
+      "pass": true
+    },
+    {
+      "name": "手机流转卡片不溢出",
+      "pass": true
+    },
+    {
+      "name": "手机节点标题不溢出",
+      "pass": true
+    },
+    {
+      "name": "页面无运行错误",
+      "pass": true,
+      "detail": []
+    }
+  ]
+}

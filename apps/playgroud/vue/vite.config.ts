@@ -10,13 +10,25 @@ export default defineConfig(({ command }) => ({
       command === "serve"
         ? [
             {
-              find: /^@bubblesjs\/workflow-vue$/,
+              find: /^@bubblesjs\/workflow-vue-history$/,
+              replacement: fileURLToPath(
+                new URL("../../../packages/vue/history/src/index.ts", import.meta.url),
+              ),
+            },
+            {
+              find: /^@bubblesjs\/workflow-vue-history\/style\.css$/,
+              replacement: fileURLToPath(
+                new URL("../../../packages/vue/history/src/style.css", import.meta.url),
+              ),
+            },
+            {
+              find: /^@bubblesjs\/workflow-vue-core$/,
               replacement: fileURLToPath(
                 new URL("../../../packages/vue/core/src/index.ts", import.meta.url),
               ),
             },
             {
-              find: /^@bubblesjs\/workflow-vue\/style\.css$/,
+              find: /^@bubblesjs\/workflow-vue-core\/style\.css$/,
               replacement: fileURLToPath(
                 new URL("../../../packages/vue/core/src/style.css", import.meta.url),
               ),

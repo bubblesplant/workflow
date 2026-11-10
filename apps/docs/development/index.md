@@ -1,13 +1,13 @@
 # 本地开发
 
-Workflow 把 Vue 组件、预览应用和文档组织在一个 pnpm 工作区中。组件在 `packages/vue/core` 开发，通过 `@bubblesjs/workflow-vue` 提供给 `apps/playgroud/vue` 使用。
+Workflow 把 Vue 组件、预览应用和文档组织在一个 pnpm 工作区中。组件在 `packages/vue/core` 开发，通过 `@bubblesjs/workflow-vue-core` 提供给 `apps/playgroud/vue` 使用。
 
 ## 环境
 
 - Node.js 26，`.node-version` 为 `26.13.0`，`mise.toml` 使用 26 系列。
 - pnpm 12，根 `package.json` 的 `packageManager` 为 `pnpm@12.15.0`。
 
-在其他项目中使用 `@bubblesjs/workflow-vue` 时，Vue 版本须满足 `^3.5.40`。
+在其他项目中使用 `@bubblesjs/workflow-vue-core` 时，Vue 版本须满足 `^3.5.40`。
 
 在仓库根目录安装依赖并启动预览应用：
 
@@ -56,12 +56,12 @@ pnpm ready
 只操作某个子项目时使用过滤器：
 
 ```bash
-pnpm --filter @bubblesjs/workflow-vue build
+pnpm --filter @bubblesjs/workflow-vue-core build
 pnpm --filter vue-playground dev
 pnpm --filter docs build
 ```
 
-添加组件前可阅读[工作区约定](../guide/workspace)。`@bubblesjs/workflow-vue` 是公开包，根项目、文档和预览应用保持私有；发布步骤见[版本与发布](../guide/release)。
+添加组件前可阅读[工作区约定](../guide/workspace)。`@bubblesjs/workflow-vue-core` 是公开包，根项目、文档和预览应用保持私有；发布步骤见[版本与发布](../guide/release)。
 
 ## 编写文档
 

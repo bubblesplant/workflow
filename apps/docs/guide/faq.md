@@ -2,7 +2,7 @@
 
 ## 画布没有显示
 
-先检查是否导入 `@bubblesjs/workflow-vue/style.css`，以及设计器的父容器是否有明确高度。`Designer` 使用 `height: 100%`，如果父容器高度为零，画布也会不可见。
+先检查是否导入 `@bubblesjs/workflow-vue-core/style.css`，以及设计器的父容器是否有明确高度。`Designer` 使用 `height: 100%`，如果父容器高度为零，画布也会不可见。
 
 ```css
 .workflow-container {
@@ -14,7 +14,7 @@
 
 ## 为什么没有 node-click 事件
 
-开始、结束和添加入口不触发业务节点点击事件。点击审批、填写、抄送、条件、分支或循环节点，再通过事件 ID 从 `nodes` 中读取当前节点。
+开始、结束和添加入口不触发业务节点点击事件。只读模式也不会触发该事件。编辑模式下，点击审批、填写、抄送、条件、分支或循环节点，再通过事件 ID 从 `nodes` 中读取当前节点。
 
 ## 能手动拖动节点或修改连线吗
 
@@ -22,7 +22,15 @@
 
 ## 如何设置只读模式
 
-当前没有公开的 `readonly` 属性。`deletable: false` 仅约束单独删除，无法关闭添加入口或配置点击。展示与编辑权限需要由业务应用安排；不要将该字段当作完整的只读或权限机制。
+为 `Designer` 设置 `readonly`，默认值为 `false`：
+
+```vue
+<Designer id="workflow-preview" :nodes="nodes" readonly />
+```
+
+只读时隐藏添加节点、增加分支和删除入口，禁用鼠标与键盘触发的节点点击，不触发 `node-click` 或 `update:nodes`，保留画布平移与缩放。
+
+`deletable: false` 仅约束单独删除；需要整体只读时，请使用 `readonly`。
 
 ## 为什么不能删除“其他”条件
 

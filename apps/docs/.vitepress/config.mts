@@ -21,13 +21,13 @@ export default defineConfig({
     resolve: {
       alias: [
         {
-          find: /^@bubblesjs\/workflow-vue$/,
+          find: /^@bubblesjs\/workflow-vue-core$/,
           replacement: fileURLToPath(
             new URL("../../../packages/vue/core/src/index.ts", import.meta.url),
           ),
         },
         {
-          find: /^@bubblesjs\/workflow-vue\/style\.css$/,
+          find: /^@bubblesjs\/workflow-vue-core\/style\.css$/,
           replacement: fileURLToPath(
             new URL("../../../packages/vue/core/src/style.css", import.meta.url),
           ),
@@ -77,6 +77,7 @@ export default defineConfig({
           { text: "节点与流程结构", link: "/guide/nodes" },
           { text: "节点业务配置", link: "/guide/configuration" },
           { text: "保存与恢复", link: "/guide/persistence" },
+          { text: "流程记录", link: "/guide/history" },
           { text: "常见问题", link: "/guide/faq" },
         ],
       },
@@ -84,6 +85,7 @@ export default defineConfig({
         text: "API 参考",
         items: [
           { text: "Designer", link: "/api/designer" },
+          { text: "WorkflowHistory", link: "/api/history" },
           { text: "类型与工具", link: "/api/model" },
           { text: "节点卡片", link: "/api/cards" },
         ],

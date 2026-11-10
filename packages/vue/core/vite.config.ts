@@ -1,7 +1,9 @@
 import Vue from "unplugin-vue/rolldown";
+import VueVite from "unplugin-vue/vite";
 import { defineConfig } from "vite-plus";
 
 export default defineConfig({
+  plugins: [VueVite()],
   pack: {
     entry: ["src/index.ts"],
     format: ["esm", "cjs"],

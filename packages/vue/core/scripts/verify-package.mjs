@@ -19,8 +19,8 @@ for (const entry of [
 }
 
 for (const module of [
-  await import("@bubblesjs/workflow-vue"),
-  require("@bubblesjs/workflow-vue"),
+  await import("@bubblesjs/workflow-vue-core"),
+  require("@bubblesjs/workflow-vue-core"),
 ]) {
   assert(module.Designer, "ESM / CJS 入口应导出 Designer");
   assert(module.CommonCard, "ESM / CJS 入口应导出 CommonCard");

@@ -27,7 +27,7 @@
 建议从 `createDefaultNodes()` 开始，通过画布添加节点。如果需要预置流程，保留添加入口可以让使用方继续插入节点：
 
 ```ts
-import { WORKFLOW_NODE_TYPE as T, type WorkflowNode } from "@bubblesjs/workflow-vue";
+import { WORKFLOW_NODE_TYPE as T, type WorkflowNode } from "@bubblesjs/workflow-vue-core";
 
 const nodes: WorkflowNode[] = [
   { id: "start", data: { type: T.START, label: "发起" } },
@@ -66,7 +66,7 @@ condition-branch
 - 删除普通条件后，其余普通条件重新连续编号。
 - 条件路径在末尾汇入分支后的节点。
 
-条件节点固定展示“条件规则 N”与“点击查看条件规则”，兜底节点固定展示“其他”。具体表达式放在 `data.config` 中，由业务系统解释。
+条件节点的标题固定展示“条件规则 N”，兜底节点固定展示“其他”。正文可通过 `data.description` 自定义，传入空字符串时正文留空；未传时，普通条件在编辑模式下展示“点击查看条件规则”，只读模式下展示“条件规则”，兜底条件展示“未满足其他条件时进入此分支”。具体表达式放在 `data.config` 中，由业务系统解释。
 
 ## 循环与退出
 
