@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 使用文档 / Documentation
+    url: https://bubblesplant.github.io/workflow/
+    about: 查看流程设计器、流程记录组件的用法、API 和示例。
+  - name: 贡献指南 / Contributing guide
+    url: https://github.com/bubblesplant/workflow/blob/main/CONTRIBUTING.md
+    about: 查看本地开发、提交 Issue 和贡献 PR 的流程。
