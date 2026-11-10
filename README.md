@@ -2,7 +2,7 @@
 
 基于 **pnpm workspace + Vue 3 + TypeScript + Vite+** 的组件开发工作区。`packages/vue/core` 编写流程设计器，`packages/vue/history` 编写流程记录展示组件，`apps/playgroud/vue` 引用组件并提供交互预览，`apps/docs` 保存 VitePress 文档。
 
-[文档](https://bubblesplant.github.io/workflow/) · [Playground](https://bubblesplant.github.io/workflow/playground/) · [GitHub](https://github.com/bubblesplant/workflow)
+[文档](https://bubblesplant.github.io/workflow/) · [Playground](https://bubblesplant.github.io/workflow/playground/) · [贡献指南](CONTRIBUTING.md) · [GitHub](https://github.com/bubblesplant/workflow)
 
 ## 启动
 

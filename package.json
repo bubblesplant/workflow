@@ -34,7 +34,7 @@
     "test": "vp run -r test",
     "typecheck": "tsc -p tsconfig.json --noEmit && vp run -r typecheck",
     "verify:packages": "vp run -r verify:package",
-    "version-packages": "changeset version && pnpm install --lockfile-only --no-frozen-lockfile"
+    "version-packages": "changeset version && pnpm install --lockfile-only --no-frozen-lockfile && pnpm format"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",

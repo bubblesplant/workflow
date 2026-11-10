@@ -39,7 +39,9 @@ pnpm ready
 
 首发 `0.1.0` 已在包清单中确定，可以直接在检查通过后运行 `pnpm release`；后续变更再通过 Changesets 升级版本。
 
-`.github/workflows/release.yml` 通过 `workflow_dispatch` 手动触发，并在 `main` 分支运行。在仓库设置中允许 GitHub Actions 创建版本 PR；配置具有 `@bubblesjs` scope 发布权限的 `NPM_TOKEN` 后支持 npm 发布。
+`.github/workflows/release.yml` 在合入或推送到 `main` 的 CI 全部通过后自动运行，也支持通过 `workflow_dispatch` 在 `main` 手动触发。自动触发时会核对 CI 检查的提交仍然是 `main` 的最新提交，跳过过时的 CI 结果。工作流先执行 `pnpm ready`；存在待处理的 Changeset 时创建或更新版本 PR，版本 PR 合入 `main` 且 CI 通过后自动发布尚未发布的包版本。升版脚本会更新版本、变更日志和锁文件，并执行格式化。
+
+在仓库设置中允许 GitHub Actions 创建版本 PR，并配置具有 `@bubblesjs` scope 发布权限的 `NPM_TOKEN`。未配置该令牌时，工作流只创建或更新版本 PR。
 
 ## 部署文档与 Playground
 
