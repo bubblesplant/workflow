@@ -1,6 +1,6 @@
 {
   "name": "@bubblesjs/workflow-vue-history",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Vue 流程流转记录展示组件",
   "files": [
     "dist"
