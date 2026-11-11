@@ -122,6 +122,6 @@ VS Code 可以打开仓库根目录，也可以单独打开 `packages/vue/core`�
 
 文档站使用 VitePress `2.0.0-alpha.21`，运行 `pnpm docs:dev` 后打开 <http://localhost:5174>。包含组件接入、节点结构、业务配置、保存恢复、API 参考与可运行的交互示例；支持本地搜索、深浅色主题和 `DOCS_BASE` 子路径部署。
 
-GitHub Pages 使用 `.github/workflows/docs.yml` 同时部署文档与两个 Playground。Release 工作流实际发布 npm 新版本后，会自动部署同一提交的文档与 Playground；也可手动运行 **Deploy docs and playground**。Vue Playground 位于文档站点的 `playground/`，React Playground 位于 `playground/react/`，文档导航提供访问入口。部署流程根据 `DOCS_BASE` 为两个应用生成资源路径；单独构建时，Vue 使用 `PLAYGROUND_BASE`、React 使用 `PLAYGROUND_REACT_BASE` 指定部署路径。
+GitHub Pages 使用 `.github/workflows/docs.yml` 同时部署文档与两个 Playground。Release 工作流实际发布 npm 新版本后，会自动部署同一提交的文档与 Playground；也可手动运行 **Deploy docs and playground**。每次部署都会将构建产物推送到 `gh-pages` 分支，首次运行时自动创建该分支；Pages 构建来源保持 **GitHub Actions**。Vue Playground 位于文档站点的 `playground/`，React Playground 位于 `playground/react/`，文档导航提供访问入口。部署流程根据 `DOCS_BASE` 为两个应用生成资源路径；单独构建时，Vue 使用 `PLAYGROUND_BASE`、React 使用 `PLAYGROUND_REACT_BASE` 指定部署路径。
 
 更多说明见[快速开始](apps/docs/guide/getting-started.md)、[交互示例](apps/docs/examples/index.md)、[本地开发](apps/docs/development/index.md)、[工作区约定](apps/docs/guide/workspace.md)和[版本与发布](apps/docs/guide/release.md)。

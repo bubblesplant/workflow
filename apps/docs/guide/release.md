@@ -71,6 +71,8 @@ pnpm preview
 
 工作流根据仓库名设置 `DOCS_BASE`，将 Vue 的 `PLAYGROUND_BASE` 设为文档路径下的 `playground/`，将 React 的 `PLAYGROUND_REACT_BASE` 设为 `playground/react/`。依次构建文档、组件库和两个 Playground 后，将 Playground 产物合并到文档产物的对应目录，一起部署到同一个 Pages 站点。
 
+合并后的静态产物会通过 `GITHUB_TOKEN` 推送到 `gh-pages` 分支，首次部署时自动创建分支，后续部署更新分支内容并保留提交历史。文档工作流及 Release 中调用它的 `docs` 作业均需要 `contents: write` 权限。站点仍通过 Pages artifact 部署，仓库 Pages 构建来源保持 **GitHub Actions**，无需额外配置发布令牌。
+
 当前仓库部署后的访问地址：
 
 - [文档站点](https://bubblesplant.github.io/workflow/)
