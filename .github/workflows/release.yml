@@ -22,6 +22,9 @@ jobs:
       (github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_branch == 'main')
+    outputs:
+      published: ${{ steps.changesets.outputs.published }}
+      commit: ${{ steps.freshness.outputs.commit }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -39,6 +42,7 @@ jobs:
           TESTED_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           current_sha="$(git rev-parse HEAD)"
+          echo "commit=$current_sha" >> "$GITHUB_OUTPUT"
           if [[ "$TRIGGER_EVENT" == "workflow_dispatch" || "$current_sha" == "$TESTED_SHA" ]]; then
             echo "is-current=true" >> "$GITHUB_OUTPUT"
           else
@@ -61,6 +65,7 @@ jobs:
       - run: pnpm ready
         if: steps.freshness.outputs.is-current == 'true'
       - name: Version packages or publish to npm
+        id: changesets
         if: steps.freshness.outputs.is-current == 'true' && env.NPM_TOKEN != ''
         uses: changesets/action@v2.1.2
         with:
@@ -82,3 +87,14 @@ jobs:
           pr-title: "chore(release): version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docs:
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/docs.yml
+    with:
+      ref: ${{ needs.release.outputs.commit }}

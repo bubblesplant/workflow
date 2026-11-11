@@ -1,0 +1,87 @@
+@import "./styles/designer.css";
+@import "./styles/history.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  color: #465675;
+  font:
+    14px/1.6 "Segoe UI",
+    "Microsoft YaHei",
+    system-ui,
+    sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.playground-provider {
+  height: 100%;
+}
+
+.playground-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+  background: #fff;
+}
+
+.playground-header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #e5e9f0;
+}
+
+.playground-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.playground-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.playground-content {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.playground-view {
+  height: 100%;
+}
+
+@media (max-width: 760px) {
+  .playground-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+  .playground-menu .ant-btn {
+    flex: 1;
+  }
+}

@@ -67,7 +67,9 @@ pnpm build:vue
 pnpm preview
 ```
 
-使用 GitHub Pages 时，将构建来源设为 **GitHub Actions**，再手动运行 `.github/workflows/docs.yml`（**Deploy docs and playground**）。工作流根据仓库名设置 `DOCS_BASE`，将 `PLAYGROUND_BASE` 设为文档路径下的 `playground/`，依次构建文档、组件库和 Playground，然后将 Playground 产物合并到文档产物的 `playground/` 目录，一起部署到同一个 Pages 站点。
+使用 GitHub Pages 时，将构建来源设为 **GitHub Actions**。Release 工作流通过 Changesets 实际发布 npm 新版本后，会自动调用 `.github/workflows/docs.yml`（**Deploy docs and playground**），部署本次 npm 发布对应提交的文档与 Playground。仅创建或更新版本 PR、没有新版本可发布、未配置 `NPM_TOKEN`，或 npm 发布失败时，不会自动部署。也可手动运行文档工作流独立部署。
+
+工作流根据仓库名设置 `DOCS_BASE`，将 Vue 的 `PLAYGROUND_BASE` 设为文档路径下的 `playground/`，将 React 的 `PLAYGROUND_REACT_BASE` 设为 `playground/react/`。依次构建文档、组件库和两个 Playground 后，将 Playground 产物合并到文档产物的对应目录，一起部署到同一个 Pages 站点。
 
 当前仓库部署后的访问地址：
 

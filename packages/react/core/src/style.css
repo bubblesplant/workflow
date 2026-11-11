@@ -1,0 +1,288 @@
+.workflow-react-designer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  overflow: hidden;
+  font-family: inherit;
+  background: #f8fafc;
+}
+.workflow-react-designer button {
+  font: inherit;
+  cursor: pointer;
+}
+.workflow-react-designer button:focus-visible,
+.workflow-react-card button:focus-visible,
+.workflow-react-add__options button:focus-visible {
+  outline: 2px solid #5075dc;
+  outline-offset: 3px;
+}
+.workflow-react-designer__loading,
+.workflow-react-designer__empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  color: #75829b;
+  font-size: 14px;
+  pointer-events: none;
+}
+.workflow-react-designer__tools {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  border: 1px solid #d6dce8;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  z-index: 10;
+}
+.workflow-react-designer__tools .ant-btn {
+  padding: 7px 12px;
+  height: 36px;
+  border: 0;
+  background: #fff;
+  color: #465675;
+  font-size: 13px;
+}
+.workflow-react-designer__tools .ant-btn:hover {
+  background: #eef3fc;
+}
+.workflow-react-terminal {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 104px;
+  height: 40px;
+  border-radius: 20px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.workflow-react-terminal--start {
+  background: #e8f1ff;
+  color: #5075dc;
+  border: 1px solid #b8cff5;
+}
+.workflow-react-terminal--end {
+  background: #edf0f4;
+  color: #75829b;
+  border: 1px solid #d6dce8;
+}
+.workflow-react-card {
+  position: relative;
+  box-sizing: border-box;
+  width: 360px;
+  height: 124px;
+  border: 1px solid #e5e9f0;
+  border-radius: 10px;
+  background: #fff;
+  color: #526481;
+  transition:
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+.workflow-react-card:not(.is-readonly):hover {
+  box-shadow: 0 8px 24px rgb(31 35 41 / 14%);
+}
+.workflow-react-card.is-selected {
+  border-color: #4e78f6;
+  box-shadow: 0 0 0 2px rgb(78 120 246 / 14%);
+}
+.workflow-react-card__trigger {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 9px;
+  overflow: hidden;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+}
+.workflow-react-card.is-readonly .workflow-react-card__trigger {
+  cursor: default;
+}
+.workflow-react-card__header {
+  display: flex;
+  box-sizing: border-box;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 52px;
+  padding: 12px 48px 12px 20px;
+  background: var(--workflow-react-card-color, #5075dc);
+  color: #fff;
+  font-size: 16px;
+}
+.workflow-react-card__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.workflow-react-card__body {
+  display: flex;
+  flex: 1;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 15px;
+}
+.workflow-react-card__body > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.workflow-react-card__delete {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  opacity: 0;
+}
+.workflow-react-card:hover .workflow-react-card__delete,
+.workflow-react-card:focus-within .workflow-react-card__delete {
+  opacity: 1;
+}
+.workflow-react-card__delete:hover {
+  background: rgb(255 255 255 / 18%);
+}
+.workflow-react-branch {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 8px;
+  width: 360px;
+  height: 56px;
+  padding: 8px 14px;
+  border: 1px solid #edd5bd;
+  border-radius: 10px;
+  background: #fffaf4;
+  color: #85501f;
+}
+.workflow-react-branch button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: #f9e8d4;
+  color: inherit;
+}
+.workflow-react-branch .workflow-react-branch__title {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  width: auto;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+}
+.workflow-react-add {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.workflow-react-add__trigger {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #ff9c2b;
+  color: #fff;
+  font-size: 20px;
+}
+.workflow-react-add__trigger:hover {
+  background: #e88a1e;
+}
+.workflow-react-add__menu {
+  box-sizing: border-box;
+  width: min(256px, calc(100vw - 48px));
+  padding: 4px;
+  color: #465675;
+}
+.workflow-react-add__menu p {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: #75829b;
+}
+.workflow-react-add__menu > div + div {
+  margin-top: 14px;
+}
+.workflow-react-add__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.workflow-react-add__options button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 5px 8px;
+  border: 1px solid #e5e9f0;
+  border-radius: 4px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.workflow-react-add__options button:hover {
+  border-color: #5075dc;
+  background: #f3f6fc;
+}
+.workflow-react-add__options button > span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  color: #fff;
+}
+.workflow-react-add__options .anticon {
+  font-size: 14px;
+}
+.workflow-react-card__body > .anticon {
+  flex: none;
+  font-size: 12px;
+}
+@media (hover: none) {
+  .workflow-react-card__delete {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workflow-react-card {
+    transition: none;
+  }
+}

@@ -1,6 +1,12 @@
 name: Deploy docs and playground
 
 on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Commit to deploy
+        required: true
+        type: string
   workflow_dispatch:
 
 concurrency:
@@ -18,6 +24,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
       - uses: pnpm/action-setup@v4
         with:
           version: 12.15.0
@@ -41,12 +49,18 @@ jobs:
           fi
       - name: Build docs
         run: pnpm docs:build
-      - name: Build playground
+      - name: Build Vue playground
         run: pnpm build:vue
         env:
           PLAYGROUND_BASE: ${{ env.DOCS_BASE }}playground/
-      - name: Include playground in Pages artifact
-        run: cp -R apps/playgroud/vue/dist apps/docs/.vitepress/dist/playground
+      - name: Build React playground
+        run: pnpm build:react
+        env:
+          PLAYGROUND_REACT_BASE: ${{ env.DOCS_BASE }}playground/react/
+      - name: Include playgrounds in Pages artifact
+        run: |
+          cp -R apps/playgroud/vue/dist apps/docs/.vitepress/dist/playground
+          cp -R apps/playgroud/react/dist apps/docs/.vitepress/dist/playground/react
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
