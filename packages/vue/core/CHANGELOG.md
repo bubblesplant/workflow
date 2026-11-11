@@ -1,5 +1,11 @@
 # @bubblesjs/workflow-vue-core
 
+## 0.2.2
+
+### Patch Changes
+
+- 2802557: 文档发布
+
 ## 0.2.1
 
 ### Patch Changes
