@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -61,6 +61,12 @@ jobs:
         run: |
           cp -R apps/playgroud/vue/dist apps/docs/.vitepress/dist/playground
           cp -R apps/playgroud/react/dist apps/docs/.vitepress/dist/playground/react
+      - name: Publish docs and playgrounds to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: apps/docs/.vitepress/dist
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
