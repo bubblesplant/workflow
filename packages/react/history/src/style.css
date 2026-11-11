@@ -1,0 +1,405 @@
+.workflow-react-history,
+.workflow-react-timeline {
+  box-sizing: border-box;
+  min-width: 0;
+  color: var(--workflow-history-text, #303d53);
+  font:
+    14px/1.65 "Segoe UI",
+    "Microsoft YaHei",
+    system-ui,
+    sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.workflow-react-history {
+  padding: 20px 24px;
+  background: #fff;
+}
+
+.workflow-react-history *,
+.workflow-react-history *::before,
+.workflow-react-history *::after,
+.workflow-react-timeline,
+.workflow-react-timeline *,
+.workflow-react-timeline *::before,
+.workflow-react-timeline *::after,
+.workflow-react-timeline-item,
+.workflow-react-timeline-item *,
+.workflow-react-timeline-item *::before,
+.workflow-react-timeline-item *::after {
+  box-sizing: border-box;
+}
+
+.workflow-react-history :where(button, a),
+.workflow-react-timeline :where(button, a),
+.workflow-react-timeline-item :where(button, a) {
+  font: inherit;
+}
+
+.workflow-react-history button,
+.workflow-react-timeline button,
+.workflow-react-timeline-item button {
+  cursor: pointer;
+}
+
+.workflow-react-history button:focus-visible,
+.workflow-react-history a:focus-visible,
+.workflow-react-timeline button:focus-visible,
+.workflow-react-timeline a:focus-visible,
+.workflow-react-timeline-item button:focus-visible,
+.workflow-react-timeline-item a:focus-visible {
+  outline: 2px solid var(--workflow-history-primary, #4269d4);
+  outline-offset: 4px;
+}
+
+.workflow-react-history__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.workflow-react-history__heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.workflow-react-history__heading::before {
+  width: 3px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--workflow-history-primary, #4269d4);
+  content: "";
+}
+
+.workflow-react-history__toggle-all {
+  flex: none;
+  padding: 3px 0;
+  border: 0;
+  background: transparent;
+  color: var(--workflow-history-primary, #4269d4);
+  font-size: 12px;
+}
+
+.workflow-react-history__list {
+  margin: 0;
+  padding: 0 0 0 8px;
+  list-style: none;
+}
+
+.workflow-react-history__item,
+.workflow-react-history__dot,
+.workflow-react-history__status {
+  --record-color: var(--workflow-history-pending, #758096);
+}
+
+.workflow-react-history__item {
+  position: relative;
+  min-width: 0;
+  padding: 0 0 28px 28px;
+}
+
+.workflow-react-history__item:not(:last-child)::before {
+  position: absolute;
+  top: 20px;
+  bottom: -20px;
+  left: 0;
+  width: 1px;
+  background: var(--workflow-history-border, #e7ebf1);
+  content: "";
+}
+
+.workflow-react-history__item:last-child {
+  padding-bottom: 0;
+}
+
+.workflow-react-history__item--success,
+.workflow-react-history__dot--success,
+.workflow-react-history__status--success {
+  --record-color: var(--workflow-history-success, #22835e);
+}
+
+.workflow-react-history__item--processing,
+.workflow-react-history__dot--processing,
+.workflow-react-history__status--processing {
+  --record-color: var(--workflow-history-processing, #926b13);
+}
+
+.workflow-react-history__item--reject,
+.workflow-react-history__dot--reject,
+.workflow-react-history__status--reject {
+  --record-color: var(--workflow-history-reject, #bc4747);
+}
+
+.workflow-react-history__item--info,
+.workflow-react-history__dot--info,
+.workflow-react-history__status--info {
+  --record-color: var(--workflow-history-primary, #4269d4);
+}
+
+.workflow-react-history__dot {
+  box-sizing: border-box;
+  display: inline-grid;
+  place-items: center;
+  width: 13px;
+  height: 13px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--record-color);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.workflow-react-timeline-item > .workflow-react-history__dot {
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  left: -6px;
+}
+
+.workflow-react-history__dot:empty::before {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
+}
+
+.workflow-react-history__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.workflow-react-history__identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.workflow-react-timeline-item__title {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.workflow-react-history__avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--workflow-history-primary, #4269d4);
+  color: #fff;
+  font-size: 14px;
+}
+
+.workflow-react-history__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.workflow-react-history__summary-main {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.workflow-react-history__record-title {
+  font-weight: 600;
+}
+
+.workflow-react-history__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  color: var(--workflow-history-muted, #68758a);
+  font-size: 12px;
+}
+
+.workflow-react-history__summary-end {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.workflow-react-history__status {
+  padding: 1px 8px;
+  border: 1px solid color-mix(in srgb, var(--record-color) 24%, white);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--record-color) 7%, white);
+  color: var(--record-color);
+  font-size: 12px;
+}
+
+.workflow-react-history__chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--workflow-history-muted, #68758a);
+}
+
+.workflow-react-history__toggle {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+}
+
+.workflow-react-history__toggle:hover {
+  background: #f1f4fa;
+}
+
+.workflow-react-history__chevron--expanded {
+  transform: rotate(90deg);
+}
+
+.workflow-react-history__details {
+  padding-top: 18px;
+}
+
+.workflow-react-history__fields {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  font-size: 13px;
+}
+
+.workflow-react-history__field {
+  display: grid;
+  grid-template-columns: minmax(70px, 100px) minmax(0, 1fr);
+  gap: 8px 16px;
+}
+
+.workflow-react-history__field dt {
+  color: var(--workflow-history-muted, #68758a);
+}
+
+.workflow-react-history__field dd {
+  min-width: 0;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.workflow-react-history__description {
+  margin-left: 8px;
+  color: var(--workflow-history-muted, #68758a);
+}
+
+.workflow-react-history__field .workflow-react-history__muted {
+  color: var(--workflow-history-muted, #68758a);
+}
+
+.workflow-react-history__attachments {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workflow-react-history__attachment {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 6px;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--workflow-history-primary, #4269d4);
+  text-align: left;
+  text-decoration: none;
+}
+
+.workflow-react-history__attachment:hover {
+  text-decoration: underline;
+}
+
+.workflow-react-history__attachment svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+}
+
+.workflow-react-history__file-size {
+  flex: none;
+  color: var(--workflow-history-muted, #68758a);
+  font-size: 12px;
+}
+
+.workflow-react-history__placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 160px;
+  padding: 32px 12px;
+  color: var(--workflow-history-muted, #68758a);
+  text-align: center;
+}
+
+@media (max-width: 540px) {
+  .workflow-react-history {
+    padding: 18px 16px;
+  }
+
+  .workflow-react-history__item {
+    padding-left: 20px;
+  }
+
+  .workflow-react-history__identity,
+  .workflow-react-timeline-item__title {
+    gap: 8px;
+  }
+
+  .workflow-react-history__avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .workflow-react-history__summary,
+  .workflow-react-history__summary-end {
+    gap: 6px;
+  }
+
+  .workflow-react-history__status {
+    max-width: 100px;
+    padding-inline: 5px;
+    font-size: 11px;
+  }
+
+  .workflow-react-history__field {
+    grid-template-columns: 70px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .workflow-react-history__file-size {
+    display: none;
+  }
+}

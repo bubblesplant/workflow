@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig/react.json",
+  "compilerOptions": {
+    "paths": {
+      "@bubblesjs/workflow-react-core": ["../../../packages/react/core/src/index.ts"],
+      "@bubblesjs/workflow-react-history": ["../../../packages/react/history/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts"]
+}

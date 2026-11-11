@@ -1,0 +1,37 @@
+import {
+  CommonCard,
+  Designer,
+  EndCard,
+  StartCard,
+  createDefaultNodes,
+  type WorkflowNode,
+  type WorkflowNodeClickEvent,
+} from "@bubblesjs/workflow-react-core";
+import { createElement } from "react";
+
+interface BusinessConfig {
+  approverIds: string[];
+}
+
+const nodes: WorkflowNode<BusinessConfig>[] = createDefaultNodes<BusinessConfig>();
+const props: Parameters<typeof Designer<BusinessConfig>>[0] = {
+  id: "consumer",
+  nodes,
+  readonly: true,
+  onNodesChange(nextNodes) {
+    const ids: string[] | undefined = nextNodes[0]?.data?.config?.approverIds;
+    void ids;
+  },
+  onNodeClick(event: WorkflowNodeClickEvent) {
+    event.id.toUpperCase();
+  },
+};
+
+createElement(Designer<BusinessConfig>, props);
+createElement(CommonCard, { title: "审批" });
+createElement(StartCard, { label: "开始" });
+createElement(EndCard, { label: "结束" });
+
+// @ts-expect-error 业务配置的泛型不能退化为 any。
+const invalidNodes: WorkflowNode<BusinessConfig>[] = createDefaultNodes<{ approverIds: number[] }>();
+void invalidNodes;

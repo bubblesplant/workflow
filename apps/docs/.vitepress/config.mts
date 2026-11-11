@@ -6,7 +6,7 @@ const basePath = (process.env.DOCS_BASE ?? "/").trim().replace(/^\/+|\/+$/g, "")
 export default defineConfig({
   title: "Workflow",
   description:
-    "面向 Vue 3 的工作流设计器，支持审批、条件分支与循环，将流程结构与业务配置连接起来。",
+    "面向 Vue 3 与 React 的工作流组件，支持审批、条件分支、循环与流程记录。React 设计器基于 FlowGram。",
   lang: "zh-CN",
   base: basePath ? `/${basePath}/` : "/",
   cleanUrls: true,
@@ -43,9 +43,26 @@ export default defineConfig({
     logo: { src: "/logo.svg", alt: "" },
     nav: [
       { text: "指南", link: "/guide/introduction", activeMatch: "/guide/" },
+      { text: "React", link: "/guide/react", activeMatch: "/guide/react" },
       { text: "API", link: "/api/designer", activeMatch: "/api/" },
       { text: "交互示例", link: "/examples/", activeMatch: "/examples/" },
-      { text: "Playground", link: "/playground/", target: "_blank", rel: "noopener noreferrer" },
+      {
+        text: "Playground",
+        items: [
+          {
+            text: "Vue Playground",
+            link: "/playground/",
+            target: "_blank",
+            rel: "noopener noreferrer",
+          },
+          {
+            text: "React Playground",
+            link: "/playground/react/",
+            target: "_blank",
+            rel: "noopener noreferrer",
+          },
+        ],
+      },
       {
         text: "开发",
         items: [
@@ -68,6 +85,7 @@ export default defineConfig({
         items: [
           { text: "介绍", link: "/guide/introduction" },
           { text: "快速开始", link: "/guide/getting-started" },
+          { text: "React 接入", link: "/guide/react" },
           { text: "交互示例", link: "/examples/" },
         ],
       },
@@ -133,7 +151,7 @@ export default defineConfig({
     darkModeSwitchTitle: "切换到深色模式",
     skipToContentLabel: "跳转到内容",
     footer: {
-      message: "用 Vue 构建流程，让业务自由生长。",
+      message: "用 Vue 与 React 构建流程，让业务自由生长。",
       copyright: "基于 MIT 许可发布 · Workflow",
     },
   },

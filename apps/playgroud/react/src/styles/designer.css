@@ -1,0 +1,151 @@
+.designer-playground {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  height: 100%;
+}
+
+.workflow-views {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 0;
+  min-height: 0;
+}
+
+.workflow-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+}
+
+.workflow-panel + .workflow-panel {
+  border-left: 1px solid #e5e9f0;
+}
+
+.workflow-panel__header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e9f0;
+}
+
+.workflow-panel__header h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.workflow-panel__header p {
+  margin: 4px 0 0;
+  color: #75829b;
+  font-size: 12px;
+}
+
+.workflow-panel__canvas {
+  min-width: 0;
+  min-height: 0;
+}
+
+.configuration {
+  padding: 20px;
+  overflow: auto;
+  border-left: 1px solid #e5e9f0;
+}
+
+.configuration h1 {
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+
+.configuration .readonly-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.configuration .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.configuration summary:focus-visible {
+  outline: 2px solid #5075dc;
+  outline-offset: 2px;
+}
+
+.configuration #workflow-node-config,
+.configuration pre {
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.configuration summary {
+  cursor: pointer;
+}
+
+.draft-actions,
+.scenario-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.scenario-actions {
+  margin-bottom: 8px;
+}
+
+.draft-actions .ant-btn,
+.scenario-actions .ant-btn {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+}
+
+.configuration__feedback {
+  margin: 10px 0 16px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.configuration__node-id {
+  margin: 0 0 16px;
+  overflow-wrap: anywhere;
+  color: #7b879b;
+  font-size: 12px;
+}
+
+.configuration details {
+  margin-top: 24px;
+}
+
+.configuration pre {
+  overflow: auto;
+  font-size: 12px;
+}
+
+.configuration .ant-form .ant-alert {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 1100px) {
+  .workflow-views {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+  .workflow-panel + .workflow-panel {
+    border-top: 1px solid #e5e9f0;
+    border-left: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .designer-playground {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: 100%;
+  }
+  .workflow-views {
+    height: 100svh;
+    min-height: 720px;
+  }
+  .configuration {
+    border-top: 1px solid #e5e9f0;
+    border-left: 0;
+  }
+}

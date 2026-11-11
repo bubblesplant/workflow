@@ -1,0 +1,37 @@
+import { createElement } from "react";
+import {
+  WorkflowHistory, WorkflowAvatar, WorkflowTimeline, WorkflowTimelineItem,
+  WorkflowTimelineTag, WorkflowTimelineDot,
+  type WorkflowHistoryProps, type WorkflowHistoryRecord, type WorkflowHistoryAttachmentEvent,
+  type WorkflowHistoryToggleEvent, type WorkflowTimelineItemSlotProps,
+} from "@bubblesjs/workflow-react-history";
+
+const records: readonly WorkflowHistoryRecord[] = Object.freeze([{ id: "review", title: "主管审批", status: "processing" }]);
+const props: WorkflowHistoryProps = { records, expandedKeys: Object.freeze(["review"]) };
+createElement(WorkflowHistory, {
+  ...props,
+  onExpandedKeysChange: (keys: string[]) => keys.includes("review"),
+  onToggle: ({ record, expanded }: WorkflowHistoryToggleEvent) => record.id && expanded,
+  onAttachmentClick: ({ attachment, event }: WorkflowHistoryAttachmentEvent) => { event.preventDefault(); return attachment.id; },
+  renderContent: ({ record }) => createElement("article", null, record.title),
+});
+createElement(WorkflowTimeline, null,
+  createElement(WorkflowTimelineItem, {
+    title: "业务标题", expanded: false, onExpandedChange: (expanded: boolean) => expanded,
+    renderTitle: ({ expanded, toggle }: WorkflowTimelineItemSlotProps) => createElement("button", { onClick: toggle }, String(expanded)),
+    children: ({ expanded }) => createElement("article", null, String(expanded)),
+  }),
+);
+createElement(WorkflowAvatar, { text: "张明" });
+createElement(WorkflowTimelineTag, { type: "success", text: "已转交" });
+createElement(WorkflowTimelineDot, { type: "pending" });
+// @ts-expect-error 头像文本必须为字符串。
+createElement(WorkflowAvatar, { text: 123 });
+// @ts-expect-error 展示状态不能使用业务操作码。
+createElement(WorkflowTimelineDot, { type: "dispatch" });
+// @ts-expect-error 受控展开键必须是字符串数组。
+createElement(WorkflowHistory, { expandedKeys: [1] });
+// @ts-expect-error 单条展开状态必须为布尔值。
+createElement(WorkflowTimelineItem, { expanded: ["review"] });
+// @ts-expect-error 附件事件不是 ID 字符串。
+createElement(WorkflowHistory, { onAttachmentClick: (_id: string) => {} });

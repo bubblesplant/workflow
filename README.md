@@ -1,8 +1,8 @@
 # Workflow
 
-基于 **pnpm workspace + Vue 3 + TypeScript + Vite+** 的组件开发工作区。`packages/vue/core` 编写流程设计器，`packages/vue/history` 编写流程记录展示组件，`apps/playgroud/vue` 引用组件并提供交互预览，`apps/docs` 保存 VitePress 文档。
+基于 **pnpm workspace + Vue 3 / React + TypeScript + Vite+** 的工作流组件工作区。Vue 与 React 均按 `core` 设计器、`history` 流程记录和独立 Playground 组织；React 设计器使用 **FlowGram**，沿用 Vue 的节点数据格式与业务配置方式。`apps/docs` 保存 VitePress 中文文档。
 
-[文档](https://bubblesplant.github.io/workflow/) · [Playground](https://bubblesplant.github.io/workflow/playground/) · [贡献指南](CONTRIBUTING.md) · [GitHub](https://github.com/bubblesplant/workflow)
+[文档](https://bubblesplant.github.io/workflow/) · [Vue Playground](https://bubblesplant.github.io/workflow/playground/) · [React Playground](https://bubblesplant.github.io/workflow/playground/react/) · [贡献指南](CONTRIBUTING.md) · [GitHub](https://github.com/bubblesplant/workflow)
 
 ## 启动
 
@@ -16,15 +16,20 @@ pnpm dev
 
 打开 <http://localhost:5173>，通过顶部菜单切换“流程设计器”和“流程记录”。页面使用 Vue 动态组件与 `KeepAlive` 切换，返回设计器时保留编辑状态。开发服务通过源码别名引用组件，修改 `packages/vue/core/src/` 或 `packages/vue/history/src/` 后即可看到更新，无需先构建组件包。
 
+React 预览运行 `pnpm dev:react`，打开 <http://localhost:5175>。支持双画布同步、节点业务配置、只读模式、浏览器草稿保存恢复与流程记录；菜单切换保留编辑状态。接入示例见 [React 使用指南](apps/docs/guide/react.md)。
+
 ## 目录
 
 ```text
 apps/
   playgroud/vue/       Vue 组件预览应用，包名 vue-playground
+  playgroud/react/     React 组件预览应用，包名 react-playground
   docs/                VitePress 中文文档
 packages/
   vue/core/            Vue 组件包，包名 @bubblesjs/workflow-vue-core
   vue/history/         Vue 流程记录组件包，包名 @bubblesjs/workflow-vue-history
+  react/core/          React FlowGram 设计器，包名 @bubblesjs/workflow-react-core
+  react/history/       React 流程记录组件包，包名 @bubblesjs/workflow-react-history
 tsconfig/              共享 TypeScript 配置
 .changeset/            公开包的版本管理配置
 ```
@@ -36,12 +41,17 @@ tsconfig/              共享 TypeScript 配置
 | 命令                                                      | 作用                                   |
 | --------------------------------------------------------- | -------------------------------------- |
 | `pnpm dev` / `pnpm dev:vue`                               | 启动 Vue playground                    |
-| `pnpm preview`                                            | 预览已构建的 playground                |
+| `pnpm dev:react`                                          | 启动 React playground（5175）          |
+| `pnpm preview`                                            | 预览已构建的 Vue playground            |
+| `pnpm --filter react-playground preview`                  | 预览已构建的 React playground（4175）  |
 | `pnpm dev:core`                                           | 监听并重新打包 Vue 组件库              |
 | `pnpm build:core`                                         | 只构建 Vue 组件库                      |
 | `pnpm dev:history`                                        | 监听并重新打包流程记录组件库           |
 | `pnpm build:history`                                      | 只构建流程记录组件库                   |
 | `pnpm build:vue`                                          | 按依赖顺序构建组件库与 Vue playground  |
+| `pnpm build:react`                                        | 构建 React 组件库与 React playground   |
+| `pnpm build:react:core`                                   | 只构建 React FlowGram 设计器           |
+| `pnpm build:react:history`                                | 只构建 React 流程记录组件库            |
 | `pnpm build`                                              | 构建整个工作区，包括文档               |
 | `pnpm typecheck`                                          | 检查根配置及各子项目类型               |
 | `pnpm lint` / `pnpm lint:fix`                             | 执行 / 修复 Oxlint 与 ESLint 检查      |
@@ -53,7 +63,7 @@ tsconfig/              共享 TypeScript 配置
 | `pnpm docs:dev` / `pnpm docs:build` / `pnpm docs:preview` | 文档开发 / 构建 / 预览                 |
 | `pnpm hooks:install`                                      | 安装提交检查 hooks                     |
 
-组件库使用 `vp pack`，输出 ESM、CJS、类型声明和 `style.css`；Vue 声明为 peer dependency。应用使用 `vp build`，生产构建通过包的 `exports` 消费组件库的 `dist` 产物。
+组件库使用 `vp pack`，输出 ESM、CJS、类型声明和 `style.css`；对应的 Vue 或 React / React DOM 声明为 peer dependency。应用使用 `vp build`，生产构建通过包的 `exports` 消费组件库的 `dist` 产物。
 
 ## 引用组件
 
@@ -112,6 +122,6 @@ VS Code 可以打开仓库根目录，也可以单独打开 `packages/vue/core`�
 
 文档站使用 VitePress `2.0.0-alpha.21`，运行 `pnpm docs:dev` 后打开 <http://localhost:5174>。包含组件接入、节点结构、业务配置、保存恢复、API 参考与可运行的交互示例；支持本地搜索、深浅色主题和 `DOCS_BASE` 子路径部署。
 
-GitHub Pages 使用 `.github/workflows/docs.yml` 同时部署文档和 Playground。手动运行 **Deploy docs and playground** 后，Playground 位于文档站点的 `playground/` 子路径，文档导航和首页提供访问入口。单独构建 Playground 时，可通过 `PLAYGROUND_BASE` 指定部署路径。
+GitHub Pages 使用 `.github/workflows/docs.yml` 同时部署文档与两个 Playground。Release 工作流实际发布 npm 新版本后，会自动部署同一提交的文档与 Playground；也可手动运行 **Deploy docs and playground**。Vue Playground 位于文档站点的 `playground/`，React Playground 位于 `playground/react/`，文档导航提供访问入口。部署流程根据 `DOCS_BASE` 为两个应用生成资源路径；单独构建时，Vue 使用 `PLAYGROUND_BASE`、React 使用 `PLAYGROUND_REACT_BASE` 指定部署路径。
 
 更多说明见[快速开始](apps/docs/guide/getting-started.md)、[交互示例](apps/docs/examples/index.md)、[本地开发](apps/docs/development/index.md)、[工作区约定](apps/docs/guide/workspace.md)和[版本与发布](apps/docs/guide/release.md)。
