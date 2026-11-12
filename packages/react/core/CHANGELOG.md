@@ -1,5 +1,11 @@
 # @bubblesjs/workflow-react-core
 
+## 0.2.1
+
+### Patch Changes
+
+- 2802557: 文档发布
+
 ## 0.2.0
 
 ### Minor Changes
