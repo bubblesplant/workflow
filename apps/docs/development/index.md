@@ -65,8 +65,10 @@ pnpm --filter docs build
 
 ## 编写文档
 
-文档使用 VitePress `2.0.0-alpha.21`。站点配置位于 `apps/docs/.vitepress/config.mts`，自定义首页和主题位于 `.vitepress/theme/`，交互示例位于 `examples/WorkflowExample.vue`。
+文档使用 VitePress `2.0.0-alpha.21`。站点配置位于 `apps/docs/.vitepress/config.mts`，自定义首页和主题位于 `.vitepress/theme/`，交互示例位于 `vue/examples/WorkflowExample.vue`。
 
 新增 Markdown 页面后，在配置中补充侧栏导航。内部链接使用站点绝对路径或 Markdown 相对路径；主题 Vue 组件中使用 `withBase()`，以支持 `DOCS_BASE` 子路径部署。
 
 示例通过源码别名引用组件，不依赖预先生成的 `dist`。运行 `pnpm --filter docs typecheck` 检查主题与示例类型，运行 `pnpm docs:build` 检查静态构建与内部链接。
+
+Vue 和 React 的指南、API 与交互示例分别维护在 `vue/` 与 `react/` 目录，各自使用独立侧栏。修改接入文档时，请更新对应技术栈目录；开发与发布说明共用。

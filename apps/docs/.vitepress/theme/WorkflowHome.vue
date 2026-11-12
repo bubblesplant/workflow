@@ -1,41 +1,51 @@
 <template>
   <div class="workflow-home">
     <section class="workflow-hero" aria-labelledby="workflow-heading">
-      <a class="workflow-release" :href="withBase('/guide/introduction')">
+      <a class="workflow-release" :href="withBase('/vue/guide/introduction')">
         <img :src="withBase('/logo.svg')" width="32" height="32" alt="" />
-        Vue 3 工作流设计器 <span>v0.1.0</span>
+        Workflow <span>Vue 3 / React</span>
       </a>
       <h1 id="workflow-heading">让流程设计<br />回到业务本身。</h1>
       <p class="workflow-hero-description">
-        从一条审批，到复杂的条件与循环。<br class="mobile-break" />用 Vue 组件，把业务连接起来。
+        从一条审批，到复杂的条件与循环。<br class="mobile-break" />用 Vue 或 React，把业务连接起来。
       </p>
       <p class="workflow-hero-note">数据驱动，类型完整，业务配置由你掌握。</p>
       <div class="workflow-actions">
-        <a class="workflow-button primary" :href="withBase('/guide/getting-started')"
-          >开始使用 <span aria-hidden="true">↗</span></a
+        <a class="workflow-button primary" :href="withBase('/vue/guide/getting-started')"
+          >Vue 文档 <span aria-hidden="true">↗</span></a
         >
-        <a
-          class="workflow-button"
-          :href="withBase('/playground/')"
-          target="_blank"
-          rel="noopener noreferrer"
-          >打开 Playground <span aria-hidden="true">↗</span></a
-        >
-        <a class="workflow-text-link" :href="withBase('/api/designer')"
-          >阅读 API <span aria-hidden="true">↗</span></a
+        <a class="workflow-button" :href="withBase('/react/guide/getting-started')"
+          >React 文档 <span aria-hidden="true">↗</span></a
         >
       </div>
     </section>
     <section class="workflow-showcase" aria-label="工作流设计器预览">
+      <div class="workflow-framework-switch" role="group" aria-label="选择示例技术栈">
+        <button type="button" :aria-pressed="framework === 'vue'" @click="selectFramework('vue')">
+          Vue
+        </button>
+        <button
+          type="button"
+          :aria-pressed="framework === 'react'"
+          @click="selectFramework('react')"
+        >
+          React
+        </button>
+      </div>
       <div class="workflow-preview-window">
         <div class="workflow-window-header">
           <span class="workflow-window-dots" aria-hidden="true"><i /><i /><i /></span
-          ><span>Workflow / 费用审批</span><span class="workflow-window-status">示例预览</span>
+          ><span>Workflow / 费用审批</span
+          ><span class="workflow-window-status">{{ frameworkName }} 示例</span>
         </div>
         <div class="workflow-preview-body">
           <div class="workflow-code-pane">
-            <span class="workflow-file-label">ApprovalFlow.vue</span>
-            <pre><code><span class="code-purple">&lt;script setup lang="ts"&gt;</span>
+            <span class="workflow-file-label">{{
+              framework === "vue" ? "ApprovalFlow.vue" : "ApprovalFlow.tsx"
+            }}</span>
+            <pre
+              v-if="framework === 'vue'"
+            ><code><span class="code-purple">&lt;script setup lang="ts"&gt;</span>
 <span class="code-purple">import</span> { ref } <span class="code-purple">from</span> <span class="code-green">"vue"</span>;
 <span class="code-purple">import</span> {
   Designer,
@@ -51,7 +61,25 @@
     v-model:nodes=<span class="code-green">"nodes"</span>
   <span class="code-blue">/&gt;</span>
 <span class="code-purple">&lt;/template&gt;</span></code></pre>
-            <a :href="withBase('/guide/getting-started')"
+            <pre
+              v-else
+            ><code><span class="code-purple">import</span> { useState } <span class="code-purple">from</span> <span class="code-green">"react"</span>;
+<span class="code-purple">import</span> {
+  Designer,
+  createDefaultNodes,
+} <span class="code-purple">from</span> <span class="code-green">"@bubblesjs/workflow-react-core"</span>;
+
+<span class="code-purple">export function</span> <span class="code-blue">ApprovalFlow</span>() {
+  <span class="code-purple">const</span> [nodes, setNodes] = <span class="code-blue">useState</span>(createDefaultNodes);
+  <span class="code-purple">return</span> (
+    <span class="code-blue">&lt;Designer</span>
+      id=<span class="code-green">"approval"</span>
+      nodes={nodes}
+      onNodesChange={setNodes}
+    <span class="code-blue">/&gt;</span>
+  );
+}</code></pre>
+            <a :href="withBase(`/${framework}/guide/getting-started`)"
               >查看完整接入代码 <span aria-hidden="true">↗</span></a
             >
           </div>
@@ -80,7 +108,7 @@
             </div>
             <div class="workflow-mini-line"><span>+</span></div>
             <div class="workflow-mini-terminal"><span class="workflow-end-dot" />流程结束</div>
-            <a class="workflow-diagram-link" :href="withBase('/examples/')"
+            <a class="workflow-diagram-link" :href="withBase(`/${framework}/examples/`)"
               >打开交互示例 <span aria-hidden="true">↗</span></a
             >
           </div>
@@ -93,15 +121,15 @@
         <p>绑定节点数据，导入样式，<br />接下来专注于你的业务。</p>
       </div>
       <div class="workflow-install">
-        <span>安装组件</span
+        <span>安装 {{ frameworkName }} 组件</span
         ><button
           type="button"
           @click="copyInstall"
           :aria-label="copied ? '安装命令已复制' : '复制安装命令'"
         >
-          <code><span>$</span> pnpm add @bubblesjs/workflow-vue-core</code
+          <code><span>$</span> {{ installCommand }}</code
           ><span>{{ copied ? "已复制" : "复制" }}</span></button
-        ><a :href="withBase('/guide/getting-started#安装')"
+        ><a :href="withBase(`/${framework}/guide/getting-started#安装`)"
           >查看安装与环境要求 <span aria-hidden="true">↗</span></a
         >
         <p v-if="copyError" role="status">{{ copyError }}</p>
@@ -111,7 +139,7 @@
       <h2 id="workflow-features-heading">流程有结构，业务有自由。</h2>
       <p>画布处理流程编排，你的应用处理业务规则。</p>
       <div class="workflow-feature-grid">
-        <a :href="withBase('/guide/nodes')"
+        <a :href="withBase(`/${framework}/guide/nodes`)"
           ><svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <path d="M16 6v7m0 0H6v9m10-9h10v9" stroke="currentColor" stroke-width="1.5" />
             <rect x="11" y="2" width="10" height="6" rx="2" fill="currentColor" />
@@ -138,7 +166,7 @@
           <p>审批、填写、抄送、条件分支与嵌套循环。节点和连线自动布局。</p>
           <span>了解流程结构 ↗</span></a
         >
-        <a :href="withBase('/guide/configuration')"
+        <a :href="withBase(`/${framework}/guide/configuration`)"
           ><svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <rect
               x="4"
@@ -160,7 +188,7 @@
           <p>监听节点点击，用自己的表单编辑配置。审批人、条件和规则由你定义。</p>
           <span>接入业务配置 ↗</span></a
         >
-        <a :href="withBase('/guide/persistence')"
+        <a :href="withBase(`/${framework}/guide/persistence`)"
           ><svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <path
               d="m10 8-7 8 7 8m12-16 7 8-7 8M18 5l-4 22"
@@ -179,23 +207,32 @@
     <section class="workflow-home-bottom">
       <img :src="withBase('/logo.svg')" width="40" height="40" alt="" />
       <h2>把下一条流程，交给 Workflow。</h2>
-      <a class="workflow-button primary" :href="withBase('/guide/getting-started')"
-        >开始构建 <span aria-hidden="true">↗</span></a
+      <a class="workflow-button primary" :href="withBase(`/${framework}/guide/getting-started`)"
+        >开始使用 {{ frameworkName }} <span aria-hidden="true">↗</span></a
       >
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { withBase } from "vitepress";
 
 const copied = ref(false);
 const copyError = ref("");
+const framework = ref<"vue" | "react">("vue");
+const frameworkName = computed(() => (framework.value === "vue" ? "Vue" : "React"));
+const installCommand = computed(() => `pnpm add @bubblesjs/workflow-${framework.value}-core`);
+
+function selectFramework(value: "vue" | "react") {
+  framework.value = value;
+  copied.value = false;
+  copyError.value = "";
+}
 
 async function copyInstall() {
   try {
-    await navigator.clipboard.writeText("pnpm add @bubblesjs/workflow-vue-core");
+    await navigator.clipboard.writeText(installCommand.value);
     copied.value = true;
     copyError.value = "";
   } catch {

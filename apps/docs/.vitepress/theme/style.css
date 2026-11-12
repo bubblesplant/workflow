@@ -178,6 +178,25 @@
     ),
     linear-gradient(135deg, #211352, #6254fe 55%, #282073);
 }
+.workflow-framework-switch {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.workflow-framework-switch button {
+  min-width: 88px;
+  padding: 8px 20px;
+  border: 1px solid rgb(255 255 255 / 45%);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+}
+.workflow-framework-switch button[aria-pressed="true"] {
+  color: #342583;
+  background: #fff;
+  border-color: #fff;
+}
 .workflow-preview-window {
   position: relative;
   max-width: 1080px;

@@ -1,5 +1,5 @@
 ---
 layout: home
-title: Vue 工作流设计器
-description: 面向 Vue 3 的工作流设计器。通过节点数据构建审批、条件分支与循环流程，使用自己的表单维护业务配置。
+title: Vue 与 React 工作流组件
+description: 选择 Vue 或 React 文档，接入工作流设计器与流程记录组件。通过节点数据编排审批、条件分支和循环，用自己的表单维护业务配置。
 ---

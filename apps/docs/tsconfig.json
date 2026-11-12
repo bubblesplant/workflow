@@ -11,6 +11,6 @@
     ".vitepress/**/*.ts",
     ".vitepress/**/*.mts",
     ".vitepress/**/*.vue",
-    "examples/**/*.vue"
+    "vue/examples/**/*.vue"
   ]
 }
