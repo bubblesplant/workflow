@@ -3,6 +3,50 @@ import { fileURLToPath, URL } from "node:url";
 
 const basePath = (process.env.DOCS_BASE ?? "/").trim().replace(/^\/+|\/+$/g, "");
 
+const developmentSidebar = [
+  {
+    text: "参与开发",
+    items: [
+      { text: "本地开发", link: "/development/" },
+      { text: "工作区约定", link: "/guide/workspace" },
+      { text: "版本与发布", link: "/guide/release" },
+    ],
+  },
+];
+
+function frameworkSidebar(framework: "vue" | "react") {
+  const root = `/${framework}`;
+  return [
+    {
+      text: `${framework === "vue" ? "Vue" : "React"} · 开始使用`,
+      items: [
+        { text: "介绍", link: `${root}/guide/introduction` },
+        { text: "快速开始", link: `${root}/guide/getting-started` },
+        { text: "交互示例", link: `${root}/examples/` },
+      ],
+    },
+    {
+      text: "使用指南",
+      items: [
+        { text: "节点与流程结构", link: `${root}/guide/nodes` },
+        { text: "节点业务配置", link: `${root}/guide/configuration` },
+        { text: "保存与恢复", link: `${root}/guide/persistence` },
+        { text: "流程记录", link: `${root}/guide/history` },
+        { text: "常见问题", link: `${root}/guide/faq` },
+      ],
+    },
+    {
+      text: "API 参考",
+      items: [
+        { text: "Designer", link: `${root}/api/designer` },
+        { text: "WorkflowHistory", link: `${root}/api/history` },
+        { text: "类型与工具", link: `${root}/api/model` },
+        { text: "节点卡片", link: `${root}/api/cards` },
+      ],
+    },
+  ];
+}
+
 export default defineConfig({
   title: "Workflow",
   description:
@@ -42,10 +86,8 @@ export default defineConfig({
   themeConfig: {
     logo: { src: "/logo.svg", alt: "" },
     nav: [
-      { text: "指南", link: "/guide/introduction", activeMatch: "/guide/" },
-      { text: "React", link: "/guide/react", activeMatch: "/guide/react" },
-      { text: "API", link: "/api/designer", activeMatch: "/api/" },
-      { text: "交互示例", link: "/examples/", activeMatch: "/examples/" },
+      { text: "Vue 文档", link: "/vue/guide/introduction", activeMatch: "^/vue/" },
+      { text: "React 文档", link: "/react/guide/introduction", activeMatch: "^/react/" },
       {
         text: "Playground",
         items: [
@@ -79,45 +121,12 @@ export default defineConfig({
         ariaLabel: "GitHub 仓库",
       },
     ],
-    sidebar: [
-      {
-        text: "开始使用",
-        items: [
-          { text: "介绍", link: "/guide/introduction" },
-          { text: "快速开始", link: "/guide/getting-started" },
-          { text: "React 接入", link: "/guide/react" },
-          { text: "交互示例", link: "/examples/" },
-        ],
-      },
-      {
-        text: "使用指南",
-        items: [
-          { text: "节点与流程结构", link: "/guide/nodes" },
-          { text: "节点业务配置", link: "/guide/configuration" },
-          { text: "保存与恢复", link: "/guide/persistence" },
-          { text: "流程记录", link: "/guide/history" },
-          { text: "常见问题", link: "/guide/faq" },
-        ],
-      },
-      {
-        text: "API 参考",
-        items: [
-          { text: "Designer", link: "/api/designer" },
-          { text: "WorkflowHistory", link: "/api/history" },
-          { text: "类型与工具", link: "/api/model" },
-          { text: "节点卡片", link: "/api/cards" },
-        ],
-      },
-      {
-        text: "参与开发",
-        collapsed: true,
-        items: [
-          { text: "本地开发", link: "/development/" },
-          { text: "工作区约定", link: "/guide/workspace" },
-          { text: "版本与发布", link: "/guide/release" },
-        ],
-      },
-    ],
+    sidebar: {
+      "/vue/": frameworkSidebar("vue"),
+      "/react/": frameworkSidebar("react"),
+      "/development/": developmentSidebar,
+      "/guide/": developmentSidebar,
+    },
     search: {
       provider: "local",
       options: {

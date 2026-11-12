@@ -27,6 +27,10 @@ export default defineConfig({
     deps: {
       alwaysBundle: [/^antdv-next(?:\/|$)/],
       neverBundle: [/^vue(?:\/|$)/],
+      dts: {
+        // 仅内联公开声明用到的上游类型，避免依赖无关的全局类型。
+        alwaysBundle: [/^antdv-next(?:\/|$)/, /^@vue-flow\/core(?:\/|$)/, /^@vueuse\/core(?:\/|$)/],
+      },
     },
     css: { fileName: "style.css" },
     sourcemap: true,

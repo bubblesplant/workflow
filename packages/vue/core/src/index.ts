@@ -1,5 +1,3 @@
-/// <reference types="web-bluetooth" preserve="true" />
-
 import { default as Designer } from "./components/Designer/index.vue";
 export { Designer };
 export type {

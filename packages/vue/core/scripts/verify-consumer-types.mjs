@@ -63,6 +63,7 @@ try {
         moduleResolution: "NodeNext",
         strict: true,
         skipLibCheck: false,
+        noUncheckedSideEffectImports: true,
         noEmit: true,
         types: [],
       },

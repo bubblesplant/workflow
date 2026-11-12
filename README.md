@@ -2,7 +2,7 @@
 
 基于 **pnpm workspace + Vue 3 / React + TypeScript + Vite+** 的工作流组件工作区。Vue 与 React 均按 `core` 设计器、`history` 流程记录和独立 Playground 组织；React 设计器使用 **FlowGram**，沿用 Vue 的节点数据格式与业务配置方式。`apps/docs` 保存 VitePress 中文文档。
 
-[文档](https://bubblesplant.github.io/workflow/) · [Vue Playground](https://bubblesplant.github.io/workflow/playground/) · [React Playground](https://bubblesplant.github.io/workflow/playground/react/) · [贡献指南](CONTRIBUTING.md) · [GitHub](https://github.com/bubblesplant/workflow)
+[Vue 文档](https://bubblesplant.github.io/workflow/vue/guide/introduction) · [React 文档](https://bubblesplant.github.io/workflow/react/guide/introduction) · [Vue Playground](https://bubblesplant.github.io/workflow/playground/) · [React Playground](https://bubblesplant.github.io/workflow/playground/react/) · [贡献指南](CONTRIBUTING.md) · [GitHub](https://github.com/bubblesplant/workflow)
 
 ## 启动
 
@@ -16,7 +16,7 @@ pnpm dev
 
 打开 <http://localhost:5173>，通过顶部菜单切换“流程设计器”和“流程记录”。页面使用 Vue 动态组件与 `KeepAlive` 切换，返回设计器时保留编辑状态。开发服务通过源码别名引用组件，修改 `packages/vue/core/src/` 或 `packages/vue/history/src/` 后即可看到更新，无需先构建组件包。
 
-React 预览运行 `pnpm dev:react`，打开 <http://localhost:5175>。支持双画布同步、节点业务配置、只读模式、浏览器草稿保存恢复与流程记录；菜单切换保留编辑状态。接入示例见 [React 使用指南](apps/docs/guide/react.md)。
+React 预览运行 `pnpm dev:react`，打开 <http://localhost:5175>。支持双画布同步、节点业务配置、只读模式、浏览器草稿保存恢复与流程记录；菜单切换保留编辑状态。接入示例见 [React 使用指南](apps/docs/react/guide/getting-started.md)。
 
 ## 目录
 
@@ -106,7 +106,7 @@ function handleNodeClick({ id }: WorkflowNodeClickEvent) {
 
 公共组件从 `packages/vue/core/src/index.ts` 导出。外部依赖版本统一放在 `pnpm-workspace.yaml` 的 `catalog` 中，子项目使用 `catalog:`，内部包使用 `workspace:*`。
 
-流程记录组件从 `packages/vue/history/src/index.ts` 导出，使用独立包 `@bubblesjs/workflow-vue-history`。公开头像、状态圆点、状态标签、时间轴条目和时间轴五个小组件，`WorkflowTimelineItem` 的正文由使用方通过默认插槽传入。`WorkflowHistory` 基于这些组件组合，接收记录数组并协调展开状态。Playground 的“流程记录”提供直接组合示例与静态记录列表，支持展开详情和预览附件；接入方式见 [history 说明](packages/vue/history/README.md)与[组件 API](apps/docs/api/history.md)。
+流程记录组件从 `packages/vue/history/src/index.ts` 导出，使用独立包 `@bubblesjs/workflow-vue-history`。公开头像、状态圆点、状态标签、时间轴条目和时间轴五个小组件，`WorkflowTimelineItem` 的正文由使用方通过默认插槽传入。`WorkflowHistory` 基于这些组件组合，接收记录数组并协调展开状态。Playground 的“流程记录”提供直接组合示例与静态记录列表，支持展开详情和预览附件；接入方式见 [history 说明](packages/vue/history/README.md)与[组件 API](apps/docs/vue/api/history.md)。
 
 `@bubblesjs/workflow-vue-core` 与 `@bubblesjs/workflow-vue-history` 为公开包，首发版本均为 `0.1.0`，使用 Changesets 管理版本与发布；根项目、文档和预览应用保持私有。`pnpm verify:packages` 只验证本地产物，不执行发布。
 
@@ -124,4 +124,4 @@ VS Code 可以打开仓库根目录，也可以单独打开 `packages/vue/core`�
 
 GitHub Pages 使用 `.github/workflows/docs.yml` 同时部署文档与两个 Playground。Release 工作流实际发布 npm 新版本后，会自动部署同一提交的文档与 Playground；也可手动运行 **Deploy docs and playground**。每次部署都会将构建产物推送到 `gh-pages` 分支，首次运行时自动创建该分支；Pages 构建来源保持 **GitHub Actions**。Vue Playground 位于文档站点的 `playground/`，React Playground 位于 `playground/react/`，文档导航提供访问入口。部署流程根据 `DOCS_BASE` 为两个应用生成资源路径；单独构建时，Vue 使用 `PLAYGROUND_BASE`、React 使用 `PLAYGROUND_REACT_BASE` 指定部署路径。
 
-更多说明见[快速开始](apps/docs/guide/getting-started.md)、[交互示例](apps/docs/examples/index.md)、[本地开发](apps/docs/development/index.md)、[工作区约定](apps/docs/guide/workspace.md)和[版本与发布](apps/docs/guide/release.md)。
+更多说明见[快速开始](apps/docs/vue/guide/getting-started.md)、[交互示例](apps/docs/vue/examples/index.md)、[本地开发](apps/docs/development/index.md)、[工作区约定](apps/docs/guide/workspace.md)和[版本与发布](apps/docs/guide/release.md)。
